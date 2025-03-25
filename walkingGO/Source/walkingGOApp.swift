@@ -11,7 +11,7 @@ import SwiftUI
 struct walkingGOApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
         }
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct CustomTextField: View {
     @Binding var text: String
     var title = ""
+    var width: CGFloat = 300
     var body: some View {
         TextField(
             "",
@@ -22,7 +23,7 @@ struct CustomTextField: View {
             .foregroundStyle(.textFieldTitle)
             .background(.textFieldBackground)
             .clipShape(RoundedRectangle(cornerRadius: 13))
-            .frame(width: 300,height: 50)
+            .frame(width: width,height: 50)
             .overlay(
                 RoundedRectangle(cornerRadius: 13)
                     .stroke(.textFieldBorder, lineWidth: 1)

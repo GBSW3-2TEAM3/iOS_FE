@@ -10,4 +10,5 @@ import Foundation
 enum PathType: Hashable{
     case login
     case signUp
+    case menu
 }

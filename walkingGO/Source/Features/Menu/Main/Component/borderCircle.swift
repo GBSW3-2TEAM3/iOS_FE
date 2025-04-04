@@ -9,7 +9,14 @@ import SwiftUI
 
 struct borderCircle: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Circle()
+            .foregroundStyle(.white)
+            .frame(width:30)
+            .overlay(
+                Circle()
+                    .stroke(.topBarGray, lineWidth: 13)
+                    .cornerRadius(15)
+            )
     }
 }
 

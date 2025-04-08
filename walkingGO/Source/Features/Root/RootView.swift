@@ -27,6 +27,10 @@ struct RootView: View {
                 case .signUp:
                     SignUpView()
                         .navigationBarBackButtonHidden()
+                    
+                case .menu:
+                    MenuView()
+                        .navigationBarBackButtonHidden()
                 }
             }
         }

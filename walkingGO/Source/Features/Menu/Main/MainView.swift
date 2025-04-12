@@ -180,7 +180,7 @@ fileprivate struct GroupRank: View {
     var totalValue: Int
     var currentValue: Int
     var width: CGFloat
-
+    
     var progress: Double {
         totalValue == 0 ? 0 : Double(currentValue) / Double(totalValue)
     }

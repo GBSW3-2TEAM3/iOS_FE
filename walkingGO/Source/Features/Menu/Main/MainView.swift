@@ -290,36 +290,24 @@ fileprivate struct MyRecorde : View {
                         .cornerRadius(10)
                     VStack{
                         HStack(spacing:35){
-                            Text("월")
-                            Text("화")
-                            Text("수")
-                            Text("목")
-                            Text("금")
-                            Text("토")
-                            Text("일")
+                            ForEach(["월","화","수","목","금","토","일"], id:\.self){ day in
+                                Text(day)
+                            }
                         }
                         .font(AppFont.PretendardSemiBold(size: 14))
                         Spacer()
                             .frame(height: 10)
                         HStack(spacing:17){
-                            borderCircle()
-                            borderCircle()
-                            borderCircle()
-                            borderCircle()
-                            borderCircle()
-                            borderCircle()
-                            borderCircle()
+                            ForEach(1...7, id:\.self){ _ in
+                                borderCircle()
+                            }
                         }
                         Spacer()
                             .frame(height: 10)
-                        HStack(spacing:27){
-                            Text("1234")
-                            Text("1235")
-                            Text("6342")
-                            Text("3985")
-                            Text("7235")
-                            Text("9237")
-                            Text("1039")
+                        HStack(spacing:24){
+                            ForEach(1...7, id:\.self){ num in
+                                Text("\(num*1234)")
+                            }
                         }
                         .font(AppFont.PretendardBold(size: 8))
                         .foregroundStyle(.progressBlue)

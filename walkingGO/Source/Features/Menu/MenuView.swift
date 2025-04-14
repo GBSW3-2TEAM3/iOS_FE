@@ -11,7 +11,7 @@ struct MenuView: View {
     @State var selectedItem: Int = 1
     var body: some View {
         TabView(selection: $selectedItem){
-            Text("asdf")
+            Text("순위")
                 .tabItem{
                     Image("rank")
                     Text("순위")
@@ -23,7 +23,7 @@ struct MenuView: View {
                     Text("홈")
                 }
                 .tag(1)
-            Text("asdjailsjdlkas")
+            MyPageView()
                 .tabItem{
                     Image("profil")
                     Text("마이")

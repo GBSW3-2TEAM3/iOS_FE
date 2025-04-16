@@ -51,6 +51,7 @@ class SignUpViewModel: ObservableObject{
             "password":signUpData.password,
             "passwordConfirm":signUpData.passwordCheck
         ]
+        
         AF.request("http://localhost:8080/api/auth/signup",method: .post,parameters: param, encoding: JSONEncoding.default)
             .responseDecodable(of: SignUpResponse.self) { response in
                 switch response.result {

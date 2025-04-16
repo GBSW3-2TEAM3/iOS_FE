@@ -22,10 +22,10 @@ struct LoginView: View {
                 .frame(height: 38)
             
             LoginForm(
-                id: $viewModel.id,
-                password: $viewModel.password,
+                id: $viewModel.loginData.id,
+                password: $viewModel.loginData.password,
                 action: {
-                    pathModel.paths.append(.menu)
+                    viewModel.login()
                 }
             )
             
@@ -40,6 +40,23 @@ struct LoginView: View {
                 .frame(height: 40)
             
             SocialLoginForm()
+        }
+        .alert(isPresented: $viewModel.showAlert){
+            if viewModel.successMessage != nil {
+                return Alert(
+                    title: Text("로그인 성공"),
+                    message: Text(viewModel.successMessage ?? "로그인 성공!"),
+                    dismissButton: .default(Text("확인")){
+                        pathModel.paths.append(.menu)
+                    }
+                )
+            } else {
+                return Alert(
+                    title: Text("로그인 실패"),
+                    message: Text(viewModel.errorMessage ?? ""),
+                    dismissButton: .default(Text("확인"))
+                )
+            }
         }
     }
 }

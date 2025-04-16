@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		06728F042D9CCA29000C88B8 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 06728F032D9CCA29000C88B8 /* SDWebImageSwiftUI */; };
+		06884B212DAF2CCD00AE03BF /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 06884B202DAF2CCD00AE03BF /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				06728F042D9CCA29000C88B8 /* SDWebImageSwiftUI in Frameworks */,
+				06884B212DAF2CCD00AE03BF /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +133,7 @@
 			name = walkingGO;
 			packageProductDependencies = (
 				06728F032D9CCA29000C88B8 /* SDWebImageSwiftUI */,
+				06884B202DAF2CCD00AE03BF /* Alamofire */,
 			);
 			productName = walkingGO;
 			productReference = 065E43412D7FBFAB00E005B6 /* walkingGO.app */;
@@ -216,6 +219,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				06728F022D9CCA29000C88B8 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				06884B1F2DAF2CCD00AE03BF /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 065E43422D7FBFAB00E005B6 /* Products */;
@@ -590,6 +594,14 @@
 				minimumVersion = 3.1.3;
 			};
 		};
+		06884B1F2DAF2CCD00AE03BF /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -597,6 +609,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 06728F022D9CCA29000C88B8 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
+		};
+		06884B202DAF2CCD00AE03BF /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06884B1F2DAF2CCD00AE03BF /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

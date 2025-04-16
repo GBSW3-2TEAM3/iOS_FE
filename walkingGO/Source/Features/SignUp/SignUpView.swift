@@ -9,25 +9,37 @@ import SwiftUI
 
 struct SignUpView: View {
     @StateObject var viewModel = SignUpViewModel()
+    @EnvironmentObject var pathModel : PathModel
     var body: some View {
         VStack{
             TopProgressBar()
             
             SignUpForm(
-                id: $viewModel.id,
-                name: $viewModel.name,
-                password: $viewModel.password,
-                passwordCheck: $viewModel.passwordCheck,
-                email: $viewModel.email,
+                id: $viewModel.signUpData.id,
+                name: $viewModel.signUpData.name,
+                password: $viewModel.signUpData.password,
+                passwordCheck: $viewModel.signUpData.passwordCheck,
+                email: $viewModel.signUpData.email,
                 buttonAction: viewModel.signUp
             )
+            
         }
         .alert(isPresented: $viewModel.showAlert){
-            Alert(
-                title: Text("회원가입 에러"),
-                message: Text(viewModel.errorMessage ?? ""),
-                dismissButton: .default(Text("확인"))
-            )
+            if viewModel.successMessage != nil {
+                return Alert(
+                    title: Text("회원가입 성공"),
+                    message: Text(viewModel.successMessage ?? "성공"),
+                    dismissButton: .default(Text("확인")){
+                        pathModel.paths.removeLast()
+                    }
+                )
+            } else {
+                return Alert(
+                    title: Text("회원가입 실패"),
+                    message: Text(viewModel.errorMessage ?? ""),
+                    dismissButton: .default(Text("확인"))
+                )
+            }
         }
     }
 }
@@ -42,7 +54,7 @@ fileprivate struct SignUpForm: View {
     
     @State private var selectedDomain = "naver.com"
     let emailOptions = ["proton.me", "hanmail.net", "kakao.com", "daum.com", "gmail.com", "naver.com"]
-
+    
     var body : some View {
         VStack{
             Spacer()
@@ -116,4 +128,5 @@ fileprivate struct SignUpForm: View {
 
 #Preview {
     SignUpView()
+        .environmentObject(PathModel())
 }

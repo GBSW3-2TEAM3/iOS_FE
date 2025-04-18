@@ -45,7 +45,7 @@ struct LoginView: View {
             if viewModel.successMessage != nil {
                 return Alert(
                     title: Text("로그인 성공"),
-                    message: Text(viewModel.successMessage ?? "로그인 성공!"),
+                    message: Text(viewModel.successMessage!),
                     dismissButton: .default(Text("확인")){
                         pathModel.paths.append(.menu)
                     }
@@ -53,7 +53,7 @@ struct LoginView: View {
             } else {
                 return Alert(
                     title: Text("로그인 실패"),
-                    message: Text(viewModel.errorMessage ?? ""),
+                    message: Text(viewModel.errorMessage!),
                     dismissButton: .default(Text("확인"))
                 )
             }

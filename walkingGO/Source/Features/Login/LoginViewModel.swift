@@ -20,8 +20,8 @@ class LoginViewModel: ObservableObject {
             "username": loginData.id,
             "password": loginData.password
         ]
-        
-        AF.request("http://localhost:8080/api/auth/login",method:.post,parameters: param,encoding: JSONEncoding.default)
+        let url = Config.url
+        AF.request("\(url)/api/auth/login",method:.post,parameters: param,encoding: JSONEncoding.default)
             .responseDecodable(of: LoginResponse.self){ response in
                 switch response.result {
                 case .success(let loginResponse):

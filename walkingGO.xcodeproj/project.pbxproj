@@ -6,6 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		06728F042D9CCA29000C88B8 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 06728F032D9CCA29000C88B8 /* SDWebImageSwiftUI */; };
+		06884B212DAF2CCD00AE03BF /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 06884B202DAF2CCD00AE03BF /* Alamofire */; };
+		0693F0D92DB1170D00FD7FC5 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0693F0D82DB1170D00FD7FC5 /* Config.xcconfig */; };
+		06AA88D52DAF818A00DA4BFD /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 06AA88D42DAF818A00DA4BFD /* SwiftKeychainWrapper */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		065E43522D7FBFAD00E005B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +34,7 @@
 		065E43412D7FBFAB00E005B6 /* walkingGO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = walkingGO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		065E43512D7FBFAD00E005B6 /* walkingGOTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = walkingGOTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		065E435B2D7FBFAE00E005B6 /* walkingGOUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = walkingGOUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0693F0D82DB1170D00FD7FC5 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -65,6 +73,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				06728F042D9CCA29000C88B8 /* SDWebImageSwiftUI in Frameworks */,
+				06884B212DAF2CCD00AE03BF /* Alamofire in Frameworks */,
+				06AA88D52DAF818A00DA4BFD /* SwiftKeychainWrapper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +99,7 @@
 		065E43382D7FBFAB00E005B6 = {
 			isa = PBXGroup;
 			children = (
+				0693F0D82DB1170D00FD7FC5 /* Config.xcconfig */,
 				065E43432D7FBFAB00E005B6 /* walkingGO */,
 				065E43542D7FBFAD00E005B6 /* walkingGOTests */,
 				065E435E2D7FBFAE00E005B6 /* walkingGOUITests */,
@@ -125,6 +137,9 @@
 			);
 			name = walkingGO;
 			packageProductDependencies = (
+				06728F032D9CCA29000C88B8 /* SDWebImageSwiftUI */,
+				06884B202DAF2CCD00AE03BF /* Alamofire */,
+				06AA88D42DAF818A00DA4BFD /* SwiftKeychainWrapper */,
 			);
 			productName = walkingGO;
 			productReference = 065E43412D7FBFAB00E005B6 /* walkingGO.app */;
@@ -208,6 +223,11 @@
 			);
 			mainGroup = 065E43382D7FBFAB00E005B6;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				06728F022D9CCA29000C88B8 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				06884B1F2DAF2CCD00AE03BF /* XCRemoteSwiftPackageReference "Alamofire" */,
+				06AA88D32DAF818A00DA4BFD /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 065E43422D7FBFAB00E005B6 /* Products */;
 			projectDirPath = "";
@@ -225,6 +245,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0693F0D92DB1170D00FD7FC5 /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +424,7 @@
 		};
 		065E43662D7FBFAE00E005B6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0693F0D82DB1170D00FD7FC5 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -432,6 +454,7 @@
 		};
 		065E43672D7FBFAE00E005B6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0693F0D82DB1170D00FD7FC5 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -571,6 +594,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		06728F022D9CCA29000C88B8 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.3;
+			};
+		};
+		06884B1F2DAF2CCD00AE03BF /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+		06AA88D32DAF818A00DA4BFD /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jrendel/SwiftKeychainWrapper";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		06728F032D9CCA29000C88B8 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06728F022D9CCA29000C88B8 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+		06884B202DAF2CCD00AE03BF /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06884B1F2DAF2CCD00AE03BF /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		06AA88D42DAF818A00DA4BFD /* SwiftKeychainWrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06AA88D32DAF818A00DA4BFD /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */;
+			productName = SwiftKeychainWrapper;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 065E43392D7FBFAB00E005B6 /* Project object */;
 }

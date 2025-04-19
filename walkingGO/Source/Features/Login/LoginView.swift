@@ -22,8 +22,11 @@ struct LoginView: View {
                 .frame(height: 38)
             
             LoginForm(
-                id: $viewModel.id,
-                password: $viewModel.password
+                id: $viewModel.loginData.id,
+                password: $viewModel.loginData.password,
+                action: {
+                    viewModel.login()
+                }
             )
             
             Spacer()
@@ -38,12 +41,30 @@ struct LoginView: View {
             
             SocialLoginForm()
         }
+        .alert(isPresented: $viewModel.showAlert){
+            if viewModel.successMessage != nil {
+                return Alert(
+                    title: Text("로그인 성공"),
+                    message: Text(viewModel.successMessage!),
+                    dismissButton: .default(Text("확인")){
+                        pathModel.paths.append(.menu)
+                    }
+                )
+            } else {
+                return Alert(
+                    title: Text("로그인 실패"),
+                    message: Text(viewModel.errorMessage!),
+                    dismissButton: .default(Text("확인"))
+                )
+            }
+        }
     }
 }
 
 fileprivate struct LoginForm: View {
     @Binding var id : String
     @Binding var password : String
+    var action: () -> Void
     var body: some View {
         VStack{
             CustomTextField(
@@ -64,7 +85,7 @@ fileprivate struct LoginForm: View {
             
             CustomButton(
                 title: "로그인",
-                action: {}
+                action: action
             )
         }
     }
@@ -97,16 +118,16 @@ fileprivate struct AuthLinks : View {
 fileprivate struct SocialLoginForm: View {
     var body: some View {
         VStack{
-            HStack{
+            HStack(spacing:12){
                 Rectangle()
-                    .frame(width:100, height: 1)
+                    .frame(width:105, height: 1)
                 
                 Text("간편 로그인")
                     .font(AppFont.PretendardBold(size: 12))
                     .foregroundStyle(.socialLoginText)
                 
                 Rectangle()
-                    .frame(width:100, height: 1)
+                    .frame(width:105, height: 1)
             }
             
             Spacer()

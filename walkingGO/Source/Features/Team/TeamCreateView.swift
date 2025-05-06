@@ -7,14 +7,15 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct TeamView: View {
+struct TeamCreateView: View {
+    @Environment(\.dismiss) private var dismiss
     @State var title: String = ""
     @State var isPublic: Bool? = nil
     @State var description: String = ""
     @State var password : String = ""
     var body: some View {
         VStack{
-            TeamImage()
+            teamImage
             Spacer()
                 .frame(height: 50)
             TeamForm(
@@ -26,24 +27,10 @@ struct TeamView: View {
             Spacer()
         }
     }
-}
-
-fileprivate struct TeamViewHeader: View {
-    var body: some View{
+    
+    var teamImage: some View{
         VStack{
-            Spacer()
-                .frame(height: 1)
-            Rectangle()
-                .frame(height: 50)
-                .foregroundStyle(.customBlue)
-        }
-    }
-}
-
-fileprivate struct TeamImage: View {
-    var body: some View{
-        VStack{
-            TeamViewHeader()
+            teamViewHeader
             
             HStack{
                 Spacer()
@@ -57,6 +44,30 @@ fileprivate struct TeamImage: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 195)
+        }
+    }
+    
+    var teamViewHeader: some View{
+        ZStack{
+            VStack{
+                Spacer()
+                    .frame(height: 1)
+                Rectangle()
+                    .frame(height: 50)
+                    .foregroundStyle(.customBlue)
+            }
+            HStack{
+                Image(systemName: "chevron.left")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 10)
+                    .foregroundStyle(.white)
+                    .padding(.leading,10)
+                    .onTapGesture{
+                        dismiss()
+                    }
+                Spacer()
+            }
         }
     }
 }
@@ -77,7 +88,7 @@ fileprivate struct TeamForm: View {
             HStack{
                 CustomButton(
                     title: "public",
-                    action: { isPublic = true},
+                    action: { isPublic = true },
                     width: 144,
                     textColor: isPublic == true ? .publicGreen : .textFieldTitle,
                     backgroundColor: .textFieldBackground,
@@ -87,7 +98,7 @@ fileprivate struct TeamForm: View {
                     .frame(width: 10)
                 CustomButton(
                     title: "private",
-                    action: { isPublic = false},
+                    action: { isPublic = false },
                     width: 144,
                     textColor: isPublic == false ? .privateRed : .textFieldTitle,
                     backgroundColor: .textFieldBackground,
@@ -118,5 +129,5 @@ fileprivate struct TeamForm: View {
     }
 }
 #Preview {
-    TeamView()
+    TeamCreateView()
 }

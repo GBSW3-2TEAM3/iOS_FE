@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RankView: View {
+    @EnvironmentObject private var pathModel: PathModel
     @StateObject var viewModel = RankViewModel()
     var body: some View {
         VStack(spacing:0){
@@ -110,6 +111,7 @@ struct RankView: View {
 }
 
 private struct RankMenuBar: View {
+    @EnvironmentObject private var pathModel: PathModel
     var body: some View {
         ZStack{
             VStack{
@@ -132,6 +134,10 @@ private struct RankMenuBar: View {
                     .scaledToFit()
                     .frame(width: 22)
                     .foregroundStyle(.white)
+                    .onTapGesture{
+                        print("클릭!")
+                        pathModel.paths.append(.createTeam)
+                    }
             }
             .padding(.trailing,10)
         }
@@ -179,4 +185,5 @@ private struct RecommendTeamView: View {
 
 #Preview {
     RankView()
+        .environmentObject(PathModel())
 }

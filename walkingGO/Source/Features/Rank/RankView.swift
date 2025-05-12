@@ -11,17 +11,22 @@ struct RankView: View {
     @EnvironmentObject private var pathModel: PathModel
     @StateObject var viewModel = RankViewModel()
     var body: some View {
-        VStack(spacing:0){
-            RankMenuBar()
-            ScrollView{
-                VStack{
-                    RecommendTeamView()
-                    
-                    teamRankingView
-                    Spacer()
+        ZStack(alignment: .top){
+            VStack(spacing: 0) {
+                Spacer()
+                    .frame(height: 50)
+                Color.viewGray
+            }
+            VStack(spacing:0){
+                RankMenuBar()
+                ScrollView{
+                    VStack{
+                        RecommendTeamView()
+                        
+                        teamRankingView
+                        Spacer()
+                    }
                 }
-                .frame(maxWidth:.infinity)
-                .background(.viewGray)
             }
         }
     }
@@ -41,39 +46,39 @@ struct RankView: View {
                 .cornerRadius(15)
                 .foregroundStyle(.white)
                 .overlay{
-                        HStack(spacing:40){
-                            ForEach(viewModel.topThreeTeams){ team in
-                                VStack(spacing:8){
-                                    let medalImage = {
-                                        switch team.rank {
-                                        case 1:
-                                            return "goldRank"
-                                        case 2:
-                                            return "silverRank"
-                                        case 3:
-                                            return "bronzeRank"
-                                        default:
-                                            return "goldRank"
-                                        }
-                                    }()
-                                    
-                                    Image(medalImage)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 70)
-                                    
-                                    VStack(spacing:2){
-                                        Text(team.name)
-                                            .font(AppFont.PretendardBold(size: 14))
-                                            .multilineTextAlignment(.center)
-                                        Text("\(team.score)")
-                                            .font(AppFont.PretendardSemiBold(size: 12))
-                                            .multilineTextAlignment(.center)
+                    HStack(spacing:40){
+                        ForEach(viewModel.topThreeTeams){ team in
+                            VStack(spacing:8){
+                                let medalImage = {
+                                    switch team.rank {
+                                    case 1:
+                                        return "goldRank"
+                                    case 2:
+                                        return "silverRank"
+                                    case 3:
+                                        return "bronzeRank"
+                                    default:
+                                        return "goldRank"
                                     }
-                                    
+                                }()
+                                
+                                Image(medalImage)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 70)
+                                
+                                VStack(spacing:2){
+                                    Text(team.name)
+                                        .font(AppFont.PretendardBold(size: 14))
+                                        .multilineTextAlignment(.center)
+                                    Text("\(team.score)")
+                                        .font(AppFont.PretendardSemiBold(size: 12))
+                                        .multilineTextAlignment(.center)
                                 }
+                                
                             }
                         }
+                    }
                 }
             
             ForEach(viewModel.remainingTeams) { team in

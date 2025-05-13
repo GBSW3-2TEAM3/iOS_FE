@@ -28,6 +28,7 @@ class LoginViewModel: ObservableObject {
                     if let login = loginResponse.loggedIn, login == true {
                         self.successMessage = "로그인 성공!"
                         KeychainWrapper.standard.set(loginResponse.jwt!, forKey: "authorization")
+                        print(loginResponse)
                         print("로그인 성공!")
                     } else {
                         self.errorMessage = loginResponse.message

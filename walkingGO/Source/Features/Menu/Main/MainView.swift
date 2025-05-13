@@ -108,7 +108,7 @@ fileprivate struct MainViewTitle: View {
             
             Spacer()
             
-            AnimatedImage(url:URL(string:"https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People%20with%20activities/Man%20Running%20Light%20Skin%20Tone.png"))
+            AnimatedImage(url:URL(string:"https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Man%20Running.png"))
                 .resizable()
                 .scaledToFit()
                 .frame(width: 120)

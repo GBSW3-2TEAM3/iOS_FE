@@ -9,20 +9,18 @@ import SDWebImageSwiftUI
 
 struct TeamCreateView: View {
     @Environment(\.dismiss) private var dismiss
-    @State var title: String = ""
-    @State var isPublic: Bool? = nil
-    @State var description: String = ""
-    @State var password : String = ""
+    @StateObject var viewModel = TeamCreateViewModel()
     var body: some View {
         VStack{
             teamImage
             Spacer()
                 .frame(height: 50)
             TeamForm(
-                title: $title,
-                isPublic: $isPublic,
-                description: $description,
-                password: $password
+                title: $viewModel.title,
+                isPublic: $viewModel.isPublic,
+                description: $viewModel.description,
+                password: $viewModel.password,
+                action: viewModel.teamCreate
             )
             Spacer()
         }
@@ -77,6 +75,7 @@ fileprivate struct TeamForm: View {
     @Binding var isPublic : Bool?
     @Binding var description: String
     @Binding var password : String
+    let action: () -> Void
     var body: some View{
         VStack{
             CustomTextField(
@@ -122,7 +121,7 @@ fileprivate struct TeamForm: View {
             if isPublic != nil {
                 CustomButton(
                     title: "생성",
-                    action: { print("생성") }
+                    action: { action() }
                 )
             }
         }

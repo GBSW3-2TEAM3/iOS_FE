@@ -37,8 +37,6 @@ struct MyPageView: View {
 fileprivate struct MyPageViewHeader: View {
     var body: some View{
         VStack{
-            Spacer()
-                .frame(height: 1)
             HStack{
                 Spacer()
                 Image(systemName: "bell.fill")

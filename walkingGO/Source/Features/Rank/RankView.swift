@@ -12,6 +12,8 @@ struct RankView: View {
     @StateObject var viewModel = RankViewModel()
     var body: some View {
         ZStack(alignment: .top){
+            Color.customBlue
+                .edgesIgnoringSafeArea(.top)
             VStack(spacing: 0) {
                 Spacer()
                     .frame(height: 50)
@@ -120,8 +122,6 @@ private struct RankMenuBar: View {
     var body: some View {
         ZStack{
             VStack{
-                Spacer()
-                    .frame(height: 1)
                 Rectangle()
                     .frame(height: 50)
                     .foregroundStyle(.customBlue)

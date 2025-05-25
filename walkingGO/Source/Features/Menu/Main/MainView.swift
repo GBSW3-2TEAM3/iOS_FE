@@ -260,6 +260,7 @@ fileprivate struct GroupRank: View {
 }
 
 fileprivate struct MyRecorde : View {
+    @EnvironmentObject var pathModel: PathModel
     var body: some View{
         ZStack{
             Rectangle()
@@ -322,6 +323,9 @@ fileprivate struct MyRecorde : View {
                         Text("운동 기록하기")
                             .font(AppFont.PretendardMedium(size: 14))
                             .foregroundStyle(.white)
+                            .onTapGesture {
+                                pathModel.paths.append(.map)
+                            }
                         Image("Record")
                             .resizable()
                             .scaledToFit()
@@ -338,4 +342,5 @@ fileprivate struct MyRecorde : View {
 }
 #Preview {
     MainView()
+        .environmentObject(PathModel())
 }

@@ -12,7 +12,7 @@ import MapKit
 struct MapView: View {
     @State private var cameraPosition: MapCameraPosition = .automatic
     @StateObject var viewModel = MapViewModel()
-    
+    @EnvironmentObject var pathModel: PathModel
     var body: some View {
         VStack(spacing:0){
             header
@@ -50,6 +50,7 @@ struct MapView: View {
                     .onTapGesture {
                         viewModel.stopTracking()
                         viewModel.stopTimer()
+                        pathModel.paths.popLast()
                     }
             }
             .padding(.bottom,20)
@@ -61,4 +62,5 @@ struct MapView: View {
 
 #Preview {
     MapView()
+        .environmentObject(PathModel())
 }

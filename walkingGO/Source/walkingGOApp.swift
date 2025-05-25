@@ -11,8 +11,8 @@ import SwiftUI
 struct walkingGOApp: App {
     var body: some Scene {
         WindowGroup {
-//            RootView()
-            MapView()
+            RootView()
+//            MapView()
         }
     }
 }

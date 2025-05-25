@@ -35,6 +35,11 @@ struct RootView: View {
                 case .createTeam:
                     TeamCreateView()
                         .navigationBarBackButtonHidden()
+                    
+                case .map:
+                    MapView()
+                        .navigationBarHidden(true)
+                        .navigationBarBackButtonHidden()
                 }
             }
         }

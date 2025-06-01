@@ -15,9 +15,9 @@ struct TeamView: View {
     var body: some View {
         ZStack{
             Color.customBlue
+                .edgesIgnoringSafeArea(.top)
             VStack{
                 HStack{
-                    Image(systemName: "chevron.left")
                     Spacer()
                     Image(systemName: "gearshape.fill")
                 }

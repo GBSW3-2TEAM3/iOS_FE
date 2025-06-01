@@ -14,13 +14,15 @@ class LoginViewModel: ObservableObject {
     @Published var successMessage: String? = nil
     @Published var errorMessage: String? = nil
     @Published var showAlert: Bool = false
-
+    
     func login() {
         let param : [String:Any] = [
             "username": loginData.id,
             "password": loginData.password
         ]
         let url = Config.url
+        print("요청 URL: \(url)")
+        
         AF.request("\(url)/api/auth/login",method:.post,parameters: param,encoding: JSONEncoding.default)
             .responseDecodable(of: LoginResponse.self){ response in
                 switch response.result {
@@ -31,11 +33,14 @@ class LoginViewModel: ObservableObject {
                         print(loginResponse)
                         print("로그인 성공!")
                     } else {
+                        print(loginResponse)
                         self.errorMessage = loginResponse.message
                         print("로그인 실패!")
                     }
                     self.showAlert.toggle()
+                    
                 case .failure(let error):
+                    print("Error: \(error.localizedDescription)")
                     self.errorMessage = error.localizedDescription
                     self.showAlert.toggle()
                 }

@@ -11,4 +11,7 @@ enum PathType: Hashable{
     case login
     case signUp
     case menu
+    case createTeam
+    case map
+    case goal
 }

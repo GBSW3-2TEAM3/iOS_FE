@@ -9,6 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct MainView: View {
+    @EnvironmentObject var pathModel: PathModel
     var body: some View {
         GeometryReader{ geometry in
             ZStack{
@@ -30,7 +31,7 @@ struct MainView: View {
                     HStack{
                         Spacer()
                         Button{
-                            
+                            pathModel.paths.append(.goal)
                         }label: {
                             Text("목표 수정하기")
                                 .font(AppFont.PretendardMedium(size: 10))
@@ -108,7 +109,7 @@ fileprivate struct MainViewTitle: View {
             
             Spacer()
             
-            AnimatedImage(url:URL(string:"https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People%20with%20activities/Man%20Running%20Light%20Skin%20Tone.png"))
+            AnimatedImage(url:URL(string:"https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Man%20Running.png"))
                 .resizable()
                 .scaledToFit()
                 .frame(width: 120)
@@ -260,6 +261,7 @@ fileprivate struct GroupRank: View {
 }
 
 fileprivate struct MyRecorde : View {
+    @EnvironmentObject var pathModel: PathModel
     var body: some View{
         ZStack{
             Rectangle()
@@ -322,6 +324,9 @@ fileprivate struct MyRecorde : View {
                         Text("운동 기록하기")
                             .font(AppFont.PretendardMedium(size: 14))
                             .foregroundStyle(.white)
+                            .onTapGesture {
+                                pathModel.paths.append(.map)
+                            }
                         Image("Record")
                             .resizable()
                             .scaledToFit()
@@ -338,4 +343,5 @@ fileprivate struct MyRecorde : View {
 }
 #Preview {
     MainView()
+        .environmentObject(PathModel())
 }

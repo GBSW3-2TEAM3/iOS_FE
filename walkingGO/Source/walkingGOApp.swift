@@ -12,6 +12,7 @@ struct walkingGOApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+//            MapView()
         }
     }
 }

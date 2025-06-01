@@ -8,9 +8,10 @@
 import Foundation
 import CoreLocation
 import MapKit
-//import HealthKit
+import Alamofire
 import _MapKit_SwiftUI
 import CoreMotion
+import SwiftKeychainWrapper
 
 class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var userPathCoordinates: [CLLocationCoordinate2D] = []
@@ -22,7 +23,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     private let locationManager = CLLocationManager()
     private let pedometer = CMPedometer()
-//    private let healthStore = HKHealthStore()
+    //    private let healthStore = HKHealthStore()
     private var lastLocation: CLLocation?
     private var stepStartDate: Date?
     private var timer: Timer?
@@ -35,9 +36,74 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
     
+    func sendWalkData() {
+        guard let startDate = stepStartDate else {
+            print("시작 시간이 없습니다.")
+            return
+        }
+        
+        let dateFormatter = ISO8601DateFormatter()
+        let startTime = dateFormatter.string(from: startDate)
+        let endTime = dateFormatter.string(from: Date())
+        
+        let coordinates = userPathCoordinates.map { ["lat": $0.latitude, "lng": $0.longitude] }
+        
+        do {
+            let coordinatesData = try JSONSerialization.data(withJSONObject: coordinates, options: [.prettyPrinted])
+            guard let coordinatesJson = String(data: coordinatesData, encoding: .utf8) else {
+                print("오류: 좌표 데이터를 문자열로 변환하지 못했습니다.")
+                return
+            }
+            
+            let walkRequest = WalkRequest(
+                startTime: startTime,
+                endTime: endTime,
+                durationSeconds: second,
+                distanceMeters: distance,
+                caloriesBurned: caloriesBurned,
+                routeCoordinatesJson: coordinatesJson
+            )
+        
+            guard let accessToken = KeychainWrapper.standard.string(forKey: "authorization") else {
+                print("오류: 액세스 토큰이 없습니다.")
+                return
+            }
+            
+            let headers: HTTPHeaders = [
+                "authorization": "Bearer \(accessToken)",
+            ]
+            let url = Config.url
+            
+            AF.request("\(url)/api/walk-logs",
+                       method: .post,
+                       parameters: walkRequest,
+                       encoder: JSONParameterEncoder.default,
+                       headers: headers)
+            .validate()
+            .responseDecodable(of: WalkResponse.self) { response in
+                switch response.result {
+                case .success(let walkResponse):
+                    print("데이터 전송 성공: \(walkResponse)")
+                    
+                case .failure(let error):
+                    print("데이터 전송 실패: \(error.localizedDescription)")
+                    if let data = response.data {
+                        do {
+                            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
+                            print("서버 에러 응답: \(errorResponse)")
+                        } catch {
+                            print("에러 응답 파싱 실패: \(error.localizedDescription)")
+                        }
+                    }
+                }
+            }
+        } catch {
+            print("오류: 좌표 JSON 직렬화 실패 - \(error.localizedDescription)")
+            return
+        }
+    }
+    
     func requestPermission() {
-//        let stepType = HKObjectType.quantityType(forIdentifier: .stepCount)!
-//        healthStore.requestAuthorization(toShare: [stepType], read: [stepType]) { _, _ in }
         locationManager.requestWhenInUseAuthorization()
     }
     
@@ -98,24 +164,24 @@ extension MapViewModel{
 //MARK: - 걸음수 로직
 extension MapViewModel{
     func startStepCount(){
+        stepStartDate = Date()
+        
         guard CMPedometer.isStepCountingAvailable() else {
-                print("걸음 수 측정 불가")
+            print("걸음 수 측정 불가")
+            return
+        }
+        
+        pedometer.startUpdates(from: stepStartDate!) { [weak self] data, error in
+            guard let self = self else { return }
+            guard let data = data, error == nil else {
+                print("걸음 수 측정 오류: \(error?.localizedDescription ?? "unknown error")")
                 return
             }
-
-            stepStartDate = Date()
             
-            pedometer.startUpdates(from: stepStartDate!) { [weak self] data, error in
-                guard let self = self else { return }
-                guard let data = data, error == nil else {
-                    print("걸음 수 측정 오류: \(error?.localizedDescription ?? "unknown error")")
-                    return
-                }
-
-                DispatchQueue.main.async {
-                    self.stepCount = data.numberOfSteps.intValue
-                }
+            DispatchQueue.main.async {
+                self.stepCount = data.numberOfSteps.intValue
             }
+        }
     }
     
     func stopStepCount(){

@@ -88,7 +88,8 @@ struct MapView: View {
             
             HStack(spacing: 12) {
                 Button("저장 및 종료") {
-                    //Save
+                    viewModel.sendWalkData()
+                    pathModel.paths.removeLast()
                 }
                 .frame(maxWidth: .infinity)
                 .padding()

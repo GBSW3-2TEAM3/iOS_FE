@@ -9,6 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct MainView: View {
+    @EnvironmentObject var pathModel: PathModel
     var body: some View {
         GeometryReader{ geometry in
             ZStack{
@@ -30,7 +31,7 @@ struct MainView: View {
                     HStack{
                         Spacer()
                         Button{
-                            
+                            pathModel.paths.append(.goal)
                         }label: {
                             Text("목표 수정하기")
                                 .font(AppFont.PretendardMedium(size: 10))

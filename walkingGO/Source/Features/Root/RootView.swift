@@ -40,6 +40,10 @@ struct RootView: View {
                     MapView()
                         .navigationBarHidden(true)
                         .navigationBarBackButtonHidden()
+                    
+                case .goal:
+                    GoalView()
+                        .navigationBarBackButtonHidden()
                 }
             }
         }

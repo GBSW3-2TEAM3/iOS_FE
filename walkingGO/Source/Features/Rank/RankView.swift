@@ -23,7 +23,7 @@ struct RankView: View {
                 RankMenuBar()
                 ScrollView{
                     VStack{
-                        RecommendTeamView()
+//                        RecommendTeamView()
                         
                         teamRankingView
                         Spacer()
@@ -126,25 +126,6 @@ private struct RankMenuBar: View {
                     .frame(height: 50)
                     .foregroundStyle(.customBlue)
             }
-            HStack{
-                Spacer()
-                Image("search")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 22)
-                    .foregroundStyle(.white)
-                
-                Image("plus")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 22)
-                    .foregroundStyle(.white)
-                    .onTapGesture{
-                        print("클릭!")
-                        pathModel.paths.append(.createTeam)
-                    }
-            }
-            .padding(.trailing,10)
         }
     }
 }

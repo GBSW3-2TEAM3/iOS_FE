@@ -10,10 +10,10 @@ import Foundation
 struct TeamCreateResponse: Decodable {
     let id : Int
     let name : String
-    let description: String
+    let description: String?
     let ownerUsername: String
     let isPublic: Bool
-    let participationCode: Int?
+    let participationCode:String?
     let memberCount: Int
     let createdAt: String
 }

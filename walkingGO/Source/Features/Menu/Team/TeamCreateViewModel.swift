@@ -30,7 +30,7 @@ class TeamCreateViewModel: ObservableObject{
         if isPublic {
             parameter["description"] = description
         } else {
-            parameter["password"] = password
+            parameter["participationCode"] = password
         }
         
         let headers: HTTPHeaders = [

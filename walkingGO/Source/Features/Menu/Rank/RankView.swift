@@ -31,6 +31,9 @@ struct RankView: View {
                 }
             }
         }
+        .onAppear{
+            viewModel.getRanks()
+        }
     }
     
     var teamRankingView: some View {
@@ -49,7 +52,7 @@ struct RankView: View {
                 .foregroundStyle(.white)
                 .overlay{
                     HStack(spacing:40){
-                        ForEach(viewModel.topThreeTeams){ team in
+                        ForEach(viewModel.topThreeTeams) {team in
                             VStack(spacing:8){
                                 let medalImage = {
                                     switch team.rank {
@@ -73,7 +76,7 @@ struct RankView: View {
                                     Text(team.name)
                                         .font(AppFont.PretendardBold(size: 14))
                                         .multilineTextAlignment(.center)
-                                    Text("\(team.score)")
+                                    Text("\(team.totalDistanceKm)")
                                         .font(AppFont.PretendardSemiBold(size: 12))
                                         .multilineTextAlignment(.center)
                                 }
@@ -83,7 +86,7 @@ struct RankView: View {
                     }
                 }
             
-            ForEach(viewModel.remainingTeams) { team in
+            ForEach(viewModel.remainingTeams, id: \.id) { team in
                 Rectangle()
                     .frame(width: 350, height: 55)
                     .foregroundStyle(.white)
@@ -104,7 +107,7 @@ struct RankView: View {
                             
                             Spacer()
                             
-                            Text("\(team.score)")
+                            Text("\(team.totalDistanceKm)")
                                 .font(AppFont.PretendardSemiBold(size: 13))
                                 .foregroundStyle(.customBlue)
                             

@@ -6,22 +6,48 @@
 //
 
 import Foundation
+import Alamofire
+import SwiftKeychainWrapper
 
-struct Team : Identifiable {
-    let id = UUID()
-    let name: String
-    let rank: Int
-    let score: Int
-}
 class RankViewModel: ObservableObject{
-    static let teams = [
-        Team(name: "1등팀", rank: 1, score: 6789),
-        Team(name: "2등팀", rank: 2, score: 5678),
-        Team(name: "3등팀", rank: 3, score: 4567),
-        Team(name: "4등팀", rank: 4, score: 3456),
-        Team(name: "5등팀", rank: 5, score: 2345)
-    ]
+    @Published var teams: [RankResponse] = []
     
-    let topThreeTeams = Array(teams.prefix(3))
-    let remainingTeams = Array(teams.dropFirst(3))
+    var topThreeTeams: [RankResponse] {
+        Array(teams.prefix(3))
+    }
+    
+    var remainingTeams: [RankResponse]{
+        Array(teams.dropFirst(3))
+    }
+    
+    
+    func getRanks() {
+        guard let token = KeychainWrapper.standard.string(forKey: "authorization") else {
+            print("토큰이 없습니다.")
+            return
+        }
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(token)"
+        ]
+        
+        let url = Config.url
+        
+        AF.request("\(url)/api/groups/ranked-by-distance",
+                   method: .get,
+                   encoding: JSONEncoding.default,
+                   headers: headers
+        )
+        .validate()
+        .responseDecodable(of: [RankResponse].self){ response in
+            switch response.result{
+            case .success(let value):
+                print(value)
+                self.teams = value
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
 }

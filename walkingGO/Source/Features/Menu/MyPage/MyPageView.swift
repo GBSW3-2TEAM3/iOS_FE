@@ -22,7 +22,7 @@ struct MyPageView: View {
                     Spacer()
                         .frame(height: 30)
                     
-                    RouteView()
+                    mapRouteView()
                     
                     CalendarView()
                         .padding()
@@ -108,7 +108,7 @@ fileprivate struct MyRecord: View {
     }
 }
 
-fileprivate struct RouteView : View {
+fileprivate struct mapRouteView : View {
     var body: some View{
         ZStack{
             //MARK: - 지도 뷰

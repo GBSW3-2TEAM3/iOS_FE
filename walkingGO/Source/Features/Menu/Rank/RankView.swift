@@ -23,13 +23,16 @@ struct RankView: View {
                 RankMenuBar()
                 ScrollView{
                     VStack{
-                        RecommendTeamView()
+//                        RecommendTeamView()
                         
                         teamRankingView
                         Spacer()
                     }
                 }
             }
+        }
+        .onAppear{
+            viewModel.getRanks()
         }
     }
     
@@ -49,7 +52,7 @@ struct RankView: View {
                 .foregroundStyle(.white)
                 .overlay{
                     HStack(spacing:40){
-                        ForEach(viewModel.topThreeTeams){ team in
+                        ForEach(viewModel.topThreeTeams) {team in
                             VStack(spacing:8){
                                 let medalImage = {
                                     switch team.rank {
@@ -73,7 +76,7 @@ struct RankView: View {
                                     Text(team.name)
                                         .font(AppFont.PretendardBold(size: 14))
                                         .multilineTextAlignment(.center)
-                                    Text("\(team.score)")
+                                    Text("\(team.totalDistanceKm)")
                                         .font(AppFont.PretendardSemiBold(size: 12))
                                         .multilineTextAlignment(.center)
                                 }
@@ -83,7 +86,7 @@ struct RankView: View {
                     }
                 }
             
-            ForEach(viewModel.remainingTeams) { team in
+            ForEach(viewModel.remainingTeams, id: \.id) { team in
                 Rectangle()
                     .frame(width: 350, height: 55)
                     .foregroundStyle(.white)
@@ -104,7 +107,7 @@ struct RankView: View {
                             
                             Spacer()
                             
-                            Text("\(team.score)")
+                            Text("\(team.totalDistanceKm)")
                                 .font(AppFont.PretendardSemiBold(size: 13))
                                 .foregroundStyle(.customBlue)
                             
@@ -126,25 +129,6 @@ private struct RankMenuBar: View {
                     .frame(height: 50)
                     .foregroundStyle(.customBlue)
             }
-            HStack{
-                Spacer()
-                Image("search")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 22)
-                    .foregroundStyle(.white)
-                
-                Image("plus")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 22)
-                    .foregroundStyle(.white)
-                    .onTapGesture{
-                        print("클릭!")
-                        pathModel.paths.append(.createTeam)
-                    }
-            }
-            .padding(.trailing,10)
         }
     }
 }

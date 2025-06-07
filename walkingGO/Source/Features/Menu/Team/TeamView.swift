@@ -13,6 +13,18 @@ struct TeamView: View {
     @StateObject var viewModel = TeamViewModel()
     
     var body: some View {
+        Group{
+            //MARK: - 팀이 없을때
+            TeamRecommend()
+            //MARK: - 팀이 있을때
+            //teamPresentView
+        }
+        .onAppear{
+            viewModel.hasTeamCheck()
+        }
+    }
+    
+    var teamPresentView: some View {
         ZStack{
             Color.customBlue
                 .edgesIgnoringSafeArea(.top)
@@ -102,7 +114,7 @@ struct TeamView: View {
                     }
             }
         }
-
+        
     }
 }
 

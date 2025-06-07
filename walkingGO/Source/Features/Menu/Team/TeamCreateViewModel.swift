@@ -17,7 +17,7 @@ class TeamCreateViewModel: ObservableObject{
     
     func teamCreate() {
         let url = Config.url
-        guard let accessToken = KeychainWrapper.standard.string(forKey: "authorization") else{
+        guard let token = KeychainWrapper.standard.string(forKey: "authorization") else{
             print("액세스 토큰이 없음")
             return
         }
@@ -34,7 +34,7 @@ class TeamCreateViewModel: ObservableObject{
         }
         
         let headers: HTTPHeaders = [
-            "authorization" : "Bearer \(accessToken)"
+            "authorization" : "Bearer \(token)"
         ]
         
         AF.request("\(url)/api/groups",

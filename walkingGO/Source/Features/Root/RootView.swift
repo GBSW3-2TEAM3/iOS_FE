@@ -44,6 +44,9 @@ struct RootView: View {
                 case .goal:
                     GoalView()
                         .navigationBarBackButtonHidden()
+                case .secretTeam:
+                    SecretTeamJoinView()
+                        .navigationBarBackButtonHidden()
                 }
             }
         }

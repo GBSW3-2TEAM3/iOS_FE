@@ -50,6 +50,7 @@ struct TeamCreateView: View {
             Rectangle()
                 .frame(height: 50)
                 .foregroundStyle(.customBlue)
+                .background(.customBlue)
             HStack{
                 Image(systemName: "chevron.left")
                     .resizable()

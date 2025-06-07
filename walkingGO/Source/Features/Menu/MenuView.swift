@@ -17,29 +17,24 @@ struct MenuView: View {
                     Text("순위")
                 }
                 .tag(0)
-            
-            TeamCreateView()
-//            TeamView()
+            TeamView()
                 .tabItem {
                     Image("team")
                     Text("팀")
                 }
                 .tag(1)
-            
             MainView()
                 .tabItem{
                     Image("home")
                     Text("홈")
                 }
                 .tag(2)
-            
             RouteView()
                 .tabItem{
                     Image("route")
                     Text("루트")
                 }
                 .tag(3)
-            
             MyPageView()
                 .tabItem{
                     Image("profil") 

@@ -11,25 +11,26 @@ struct RankView: View {
     @EnvironmentObject private var pathModel: PathModel
     @StateObject var viewModel = RankViewModel()
     var body: some View {
-        ZStack(alignment: .top){
-            Color.customBlue
-                .edgesIgnoringSafeArea(.top)
-            VStack(spacing: 0) {
-                Spacer()
-                    .frame(height: 50)
+        VStack(spacing:0){
+            Rectangle()
+                .frame(height: 50)
+                .foregroundStyle(.customBlue)
+                .background(.customBlue)
+            ZStack{
                 Color.viewGray
-            }
-            VStack(spacing:0){
-                RankMenuBar()
-                ScrollView{
-                    VStack{
-//                        RecommendTeamView()
-                        
-                        teamRankingView
-                        Spacer()
+                VStack(spacing:0){
+                    ScrollView{
+                        VStack{
+                            //RecommendTeamView()
+                            
+                            teamRankingView
+                            Spacer()
+                        }
                     }
                 }
+                .padding(25)
             }
+            Spacer()
         }
         .onAppear{
             viewModel.getRanks()
@@ -41,8 +42,6 @@ struct RankView: View {
             HStack{
                 Text("오늘의 Top 3")
                     .font(AppFont.PretendardSemiBold(size: 14))
-                    .padding([.top,.leading],15)
-                    .padding(.bottom,5)
                 Spacer()
             }
             
@@ -115,19 +114,6 @@ struct RankView: View {
                                 .frame(width: 23)
                         }
                     }
-            }
-        }
-    }
-}
-
-private struct RankMenuBar: View {
-    @EnvironmentObject private var pathModel: PathModel
-    var body: some View {
-        ZStack{
-            VStack{
-                Rectangle()
-                    .frame(height: 50)
-                    .foregroundStyle(.customBlue)
             }
         }
     }

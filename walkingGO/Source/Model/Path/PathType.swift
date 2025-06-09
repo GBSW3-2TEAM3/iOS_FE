@@ -15,4 +15,5 @@ enum PathType: Hashable{
     case map
     case goal
     case secretTeam
+    case editProfil
 }

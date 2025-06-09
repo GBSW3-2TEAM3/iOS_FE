@@ -40,12 +40,14 @@ struct RootView: View {
                     MapView()
                         .navigationBarHidden(true)
                         .navigationBarBackButtonHidden()
-                    
                 case .goal:
                     GoalView()
                         .navigationBarBackButtonHidden()
                 case .secretTeam:
                     SecretTeamJoinView()
+                        .navigationBarBackButtonHidden()
+                case .editProfil:
+                    EditProfileView()
                         .navigationBarBackButtonHidden()
                 }
             }

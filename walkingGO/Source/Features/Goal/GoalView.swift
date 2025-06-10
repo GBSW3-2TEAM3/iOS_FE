@@ -9,7 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct GoalView: View {
-    @State private var value: Double = 3.0
+    @StateObject var viewModel = GoalViewModel()
     @EnvironmentObject var pathModel: PathModel
     
     var body: some View {
@@ -45,15 +45,17 @@ struct GoalView: View {
             .font(AppFont.PretendardSemiBold(size: 13))
             .foregroundStyle(.textFieldTitle)
             
-            CustomSlider(value: $value, range: 0...5, step: 0.5)
+            CustomSlider(value: $viewModel.value, range: 0...5, step: 0.5)
                 .frame(height: 10)
                 .padding(.horizontal, 20)
             
             Spacer()
                 .frame(height: 40)
-            Text(String(format: "%.1f km", value))
+            
+            Text(String(format: "%.1f km", viewModel.value))
                 .font(AppFont.PretendardSemiBold(size: 23))
                 .padding(.top, 10)
+            
             Spacer()
                 .frame(height: 40)
             
@@ -61,11 +63,20 @@ struct GoalView: View {
                 title: "완료",
                 action: {
                     //백엔드 유저 목표 수정 요청
-                    pathModel.paths.removeLast()
+                    viewModel.changeUser()
                 },
                 width: 180
             )
             Spacer()
+        }
+        .alert(isPresented: $viewModel.showAlert){
+            return Alert(
+                title: Text("목표 수정 성공"),
+                message: Text("목표 수정에 성공하였습니다."),
+                dismissButton: .default(Text("확인")){
+                    pathModel.paths.removeLast()
+                }
+            )
         }
     }
 }

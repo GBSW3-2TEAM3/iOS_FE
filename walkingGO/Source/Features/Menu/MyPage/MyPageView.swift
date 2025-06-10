@@ -35,20 +35,18 @@ struct MyPageView: View {
 }
 
 fileprivate struct MyPageViewHeader: View {
+    @EnvironmentObject var pathModel: PathModel
     var body: some View{
         VStack{
             HStack{
                 Spacer()
-                Image(systemName: "bell.fill")
+                Image(systemName: "gearshape.fill")
                     .foregroundStyle(.white)
                     .scaledToFit()
                     .frame(width: 30)
-                    .overlay(
-                        Circle()
-                            .fill(Color.red)
-                            .frame(width: 6, height: 6)
-                            .offset(x: -6, y: 2), alignment: .topTrailing
-                    )
+                    .onTapGesture {
+                        pathModel.paths.append(.editProfil)
+                    }
                 Spacer()
                     .frame(width: 20)
             }
@@ -123,4 +121,5 @@ fileprivate struct mapRouteView : View {
 
 #Preview {
     MyPageView()
+        .environmentObject(PathModel())
 }

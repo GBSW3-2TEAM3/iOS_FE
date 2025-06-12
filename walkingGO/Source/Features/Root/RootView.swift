@@ -49,6 +49,9 @@ struct RootView: View {
                 case .editProfil:
                     EditProfileView()
                         .navigationBarBackButtonHidden()
+                case .detailTeam(let team):
+                    TeamDetailView(team: team)
+                        .navigationBarBackButtonHidden()
                 }
             }
         }

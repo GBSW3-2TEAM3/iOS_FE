@@ -163,6 +163,7 @@ extension MapViewModel{
 
 //MARK: - 걸음수 로직
 extension MapViewModel{
+    
     func startStepCount(){
         stepStartDate = Date()
         

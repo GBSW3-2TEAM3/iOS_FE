@@ -11,16 +11,17 @@ struct TeamView: View {
     var teamName: String = "할래'말레'"
     var teamdescription: String = "경소고 친구들이 모여서 만든 러닝 크루!"
     @StateObject var viewModel = TeamViewModel()
+    @EnvironmentObject var pathModel: PathModel
     
     var body: some View {
         Group{
-            //MARK: - 팀이 없을때
-            TeamRecommend()
-            //MARK: - 팀이 있을때
-            //teamPresentView
-        }
-        .onAppear{
-            viewModel.hasTeamCheck()
+//            if viewModel.team == nil {
+//                //MARK: - 팀이 없을때x
+//                TeamRecommend()
+//            }else{
+                //MARK: - 팀이 있을때
+                teamPresentView
+//            }
         }
     }
     
@@ -32,6 +33,9 @@ struct TeamView: View {
                 HStack{
                     Spacer()
                     Image(systemName: "gearshape.fill")
+                        .onTapGesture {
+                            pathModel.paths.append(.detailTeam(viewModel.detailTeam!))
+                        }
                 }
                 .padding()
                 .foregroundStyle(.white)
@@ -55,7 +59,7 @@ struct TeamView: View {
                     VStack {
                         Spacer()
                             .frame(height: 80)
-                        Text(teamName)
+                        Text(viewModel.team?.name ?? teamName)
                             .font(AppFont.PretendardBold(size: 22))
                         Spacer()
                             .frame(height: 10)
@@ -64,34 +68,35 @@ struct TeamView: View {
                         Spacer()
                             .frame(height: 15)
                         VStack(spacing:22){
-                            ForEach(viewModel.members, id: \.self) { member in
-                                HStack{
-                                    Spacer()
-                                        .frame(width: 20)
-                                    
-                                    Circle()
-                                        .frame(width: 35)
-                                        .foregroundStyle(member.color)
-                                    
-                                    Spacer()
-                                        .frame(width: 14)
-                                    
-                                    Text(member.name)
-                                        .font(AppFont.PretendardSemiBold(size: 11))
-                                        .foregroundStyle(member.color)
-                                    
-                                    Spacer()
-                                    
-                                    Text("\(member.score)")
-                                        .font(AppFont.PretendardSemiBold(size: 13))
-                                        .foregroundStyle(member.color)
-                                    
-                                    Spacer()
-                                        .frame(width: 20)
+                            if let member = viewModel.detailTeam?.members {
+                                ForEach(member, id: \.userId) { member in
+                                    HStack{
+                                        Spacer()
+                                            .frame(width: 20)
+                                        
+                                        Circle()
+                                            .frame(width: 35)
+                                        
+                                        Spacer()
+                                            .frame(width: 14)
+                                        
+                                        Text(member.username)
+                                            .font(AppFont.PretendardSemiBold(size: 11))
+                                        
+                                        Spacer()
+                                        
+                                        Text("\(member.totalDistanceKm)")
+                                            .font(AppFont.PretendardSemiBold(size: 13))
+                                        
+                                        Spacer()
+                                            .frame(width: 20)
+                                    }
+                                    .frame(width:350, height: 55)
+                                    .background(.white)
+                                    .cornerRadius(10)
                                 }
-                                .frame(width:350, height: 55)
-                                .background(.white)
-                                .cornerRadius(10)
+                            } else {
+                                Text("멤버 정보가 없습니다.")
                             }
                         }
                     }

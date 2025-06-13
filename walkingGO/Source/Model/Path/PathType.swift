@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum PathType: Hashable{
+enum PathType: Hashable {
     case login
     case signUp
     case menu
@@ -16,4 +16,6 @@ enum PathType: Hashable{
     case goal
     case secretTeam
     case editProfil
+    case detailTeam(TeamDetailResponse)
+    case joinTeam(TeamDetailResponse)
 }

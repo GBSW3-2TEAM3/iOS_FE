@@ -9,8 +9,7 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct SecretTeamJoinView: View {
-    @EnvironmentObject var pathModel: PathModel
-    @State var text: String = ""
+    @StateObject var viewModel: SecretTeamJoinViewModel
     var body: some View {
         VStack{
             secretTeamJoinHeader
@@ -31,7 +30,7 @@ struct SecretTeamJoinView: View {
             Spacer()
                 .frame(height: 35)
             
-            CustomTextField(text: $text,title: "비밀번호")
+            CustomTextField(text: $viewModel.teamCode,title: "비밀번호")
             
             Spacer()
                 .frame(height: 35)
@@ -39,7 +38,7 @@ struct SecretTeamJoinView: View {
             CustomButton(
                 title: "완료",
                 action: {
-                    print("완료")
+                    viewModel.secretTeamJoin()
                 }
             )
             Spacer()
@@ -62,7 +61,7 @@ struct SecretTeamJoinView: View {
                     .frame(width: 12)
                     .foregroundStyle(.white)
                     .onTapGesture {
-                        pathModel.paths.removeLast()
+                        viewModel.back()
                     }
                 Spacer()
             }
@@ -72,5 +71,5 @@ struct SecretTeamJoinView: View {
 }
 
 #Preview {
-    SecretTeamJoinView()
+    SecretTeamJoinView(viewModel: SecretTeamJoinViewModel(pathModel: PathModel()))
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TeamCheckResponse: Codable {
+struct TeamCheckResponse: Codable, Hashable {
     let id : Int
     let name : String
     let description: String?

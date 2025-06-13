@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct TeamRecommend: View {
-    @EnvironmentObject var pathModel : PathModel
-    @StateObject var viewModel = TeamRecommendViewModel()
+    @StateObject var viewModel : TeamRecommendViewModel
     
     var body: some View {
         VStack(spacing: 0){
@@ -30,6 +29,7 @@ struct TeamRecommend: View {
             Color.customBlue
                 .background(.customBlue)
                 .frame(height: 50)
+            
             HStack{
                 Spacer()
                 Image("plus")
@@ -37,7 +37,7 @@ struct TeamRecommend: View {
                     .scaledToFit()
                     .frame(width: 20)
                     .onTapGesture {
-                        pathModel.paths.append(.createTeam)
+                        viewModel.send(action: .createTeam)
                     }
                 Spacer()
                     .frame(width: 20)
@@ -46,7 +46,7 @@ struct TeamRecommend: View {
                     .scaledToFit()
                     .frame(width: 20)
                     .onTapGesture {
-                        pathModel.paths.append(.secretTeam)
+                        viewModel.send(action: .secretTeam)
                     }
                 Spacer()
                     .frame(width: 20)
@@ -69,7 +69,7 @@ struct TeamRecommend: View {
                     .overlay {
                         VStack{
                             HStack{
-                                Text("봉양레인저")
+                                Text(viewModel.firstTeam?.name ?? "팀이 존재하지 않습니다.")
                                     .font(AppFont.PretendardBold(size: 16))
                                     .foregroundStyle(.white)
                                 Text("가입")
@@ -79,7 +79,7 @@ struct TeamRecommend: View {
                                     .background(.white)
                                     .cornerRadius(5)
                                 Spacer()
-                                Text("2/3")
+                                Text("\(viewModel.firstTeam?.memberCount ?? 0)/10")
                                     .foregroundStyle(.white)
                                     .font(AppFont.PretendardSemiBold(size: 13))
                                 Text("2,360")
@@ -91,7 +91,7 @@ struct TeamRecommend: View {
                                 .frame(height: 10)
                             
                             HStack{
-                                Text("경소고 친구들이 모여서 만든 러닝 크루!")
+                                Text(viewModel.firstTeam?.description ?? "팀이 존재하지 않습니다.")
                                     .font(AppFont.PretendardMedium(size: 11))
                                     .foregroundStyle(.white)
                                 Spacer()
@@ -99,7 +99,13 @@ struct TeamRecommend: View {
                             .padding(.horizontal,20)
                         }
                     }
-                
+                    .onTapGesture {
+                        if let teamId = viewModel.firstTeam?.id {
+                            viewModel.detailTeamJoin(groupid: teamId)
+                        } else {
+                            print("팀 ID가 없습니다.")
+                        }
+                    }
                 Spacer()
                     .frame(height: 20)
                 HStack{
@@ -108,7 +114,7 @@ struct TeamRecommend: View {
                     Spacer()
                 }
                 
-                ForEach(viewModel.team, id: \.id){ team in
+                ForEach(viewModel.team){ team in
                     Spacer()
                         .frame(height: 15)
                     RoundedRectangle(cornerRadius: 10)
@@ -119,13 +125,18 @@ struct TeamRecommend: View {
                                 Text(team.name)
                                     .font(AppFont.PretendardBold(size: 13))
                                 Spacer()
-                                Text(team.memberCount)
+                                Text("\(team.memberCount)/10")
                                     .font(AppFont.PretendardBold(size: 13))
-                                Text(String(format: "%.1f", team.totalKM))
-                                    .foregroundStyle(.customBlue)
-                                    .font(AppFont.PretendardBold(size: 13))
+                                
+                                //MARK: - 백엔드한테 \(url)/api/groups/public 여기서 받아오는 데이터에 team.totalKM도추가해달라카기
+                                //                                Text(String(format: "%.1f", team.totalKM))
+                                //                                    .foregroundStyle(.customBlue)
+                                //                                    .font(AppFont.PretendardBold(size: 13))
                             }
                             .padding(.horizontal,20)
+                        }
+                        .onTapGesture {
+                            viewModel.detailTeamJoin(groupid: team.id)
                         }
                 }
             }
@@ -138,6 +149,6 @@ struct TeamRecommend: View {
 }
 
 #Preview {
-    TeamRecommend()
+    TeamRecommend(viewModel: TeamRecommendViewModel(pathModel: PathModel()))
         .environmentObject(PathModel())
 }

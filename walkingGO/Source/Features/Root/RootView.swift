@@ -31,7 +31,7 @@ struct RootView: View {
                 case .menu:
                     MenuView()
                         .navigationBarBackButtonHidden()
-                    
+
                 case .createTeam:
                     TeamCreateView()
                         .navigationBarBackButtonHidden()
@@ -44,10 +44,16 @@ struct RootView: View {
                     GoalView()
                         .navigationBarBackButtonHidden()
                 case .secretTeam:
-                    SecretTeamJoinView()
+                    SecretTeamJoinView(viewModel: .init(pathModel: pathModel))
                         .navigationBarBackButtonHidden()
                 case .editProfil:
                     EditProfileView()
+                        .navigationBarBackButtonHidden()
+                case .detailTeam(let team):
+                    TeamDetailView(viewModel: TeamDetailViewModel(team: team, pathModel: pathModel))
+                        .navigationBarBackButtonHidden()
+                case .joinTeam(let team):
+                    TeamJoinView(viewModel: TeamJoinViewModel(team: team, pathModel: pathModel))
                         .navigationBarBackButtonHidden()
                 }
             }

@@ -11,6 +11,7 @@ import SwiftKeychainWrapper
 
 class TeamRecommendViewModel: ObservableObject{
     @Published var team: [Team] = []
+    @Published var firstTeam: Team?
     
     private var pathModel: PathModel
     
@@ -45,7 +46,14 @@ class TeamRecommendViewModel: ObservableObject{
         .responseDecodable(of: [Team].self) { response in
             switch response.result{
             case .success(let value):
-                self.team = value
+                let shuffeldTeams = value.shuffled()
+                if let first = shuffeldTeams.first {
+                    self.firstTeam = first
+                    self.team = Array(shuffeldTeams.dropFirst())
+                } else {
+                    self.firstTeam = nil
+                    self.team = []
+                }
                 print(value)
             case .failure(let error):
                 print(error)

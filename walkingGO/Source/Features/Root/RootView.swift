@@ -31,7 +31,7 @@ struct RootView: View {
                 case .menu:
                     MenuView()
                         .navigationBarBackButtonHidden()
-                    
+
                 case .createTeam:
                     TeamCreateView()
                         .navigationBarBackButtonHidden()

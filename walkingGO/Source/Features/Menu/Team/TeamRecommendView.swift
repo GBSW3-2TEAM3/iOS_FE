@@ -69,7 +69,7 @@ struct TeamRecommend: View {
                     .overlay {
                         VStack{
                             HStack{
-                                Text("봉양레인저")
+                                Text(viewModel.firstTeam?.name ?? "팀이 존재하지 않습니다.")
                                     .font(AppFont.PretendardBold(size: 16))
                                     .foregroundStyle(.white)
                                 Text("가입")
@@ -79,7 +79,7 @@ struct TeamRecommend: View {
                                     .background(.white)
                                     .cornerRadius(5)
                                 Spacer()
-                                Text("2/3")
+                                Text("\(viewModel.firstTeam?.memberCount ?? 0)/10")
                                     .foregroundStyle(.white)
                                     .font(AppFont.PretendardSemiBold(size: 13))
                                 Text("2,360")
@@ -91,7 +91,7 @@ struct TeamRecommend: View {
                                 .frame(height: 10)
                             
                             HStack{
-                                Text("경소고 친구들이 모여서 만든 러닝 크루!")
+                                Text(viewModel.firstTeam?.description ?? "팀이 존재하지 않습니다.")
                                     .font(AppFont.PretendardMedium(size: 11))
                                     .foregroundStyle(.white)
                                 Spacer()
@@ -99,7 +99,13 @@ struct TeamRecommend: View {
                             .padding(.horizontal,20)
                         }
                     }
-                
+                    .onTapGesture {
+                        if let teamId = viewModel.firstTeam?.id {
+                            viewModel.detailTeamJoin(groupid: teamId)
+                        } else {
+                            print("팀 ID가 없습니다.")
+                        }
+                    }
                 Spacer()
                     .frame(height: 20)
                 HStack{
@@ -123,9 +129,9 @@ struct TeamRecommend: View {
                                     .font(AppFont.PretendardBold(size: 13))
                                 
                                 //MARK: - 백엔드한테 \(url)/api/groups/public 여기서 받아오는 데이터에 team.totalKM도추가해달라카기
-//                                Text(String(format: "%.1f", team.totalKM))
-//                                    .foregroundStyle(.customBlue)
-//                                    .font(AppFont.PretendardBold(size: 13))
+                                //                                Text(String(format: "%.1f", team.totalKM))
+                                //                                    .foregroundStyle(.customBlue)
+                                //                                    .font(AppFont.PretendardBold(size: 13))
                             }
                             .padding(.horizontal,20)
                         }

@@ -14,9 +14,6 @@ import SwiftKeychainWrapper
 class TeamViewModel: ObservableObject {
     @Published var team: TeamCheckResponse?
     @Published var detailTeam: TeamDetailResponse?
-    init(){
-        hasTeamCheck()
-    }
     
     func hasTeamCheck() {
         guard let token = KeychainWrapper.standard.string(forKey: "authorization") else {

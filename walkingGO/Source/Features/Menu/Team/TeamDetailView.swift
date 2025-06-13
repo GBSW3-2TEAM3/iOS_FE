@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct TeamDetailView: View {
-    let team: TeamDetailResponse
-    @EnvironmentObject var pathModel: PathModel
+    @StateObject var viewModel: TeamDetailViewModel
     
     var body: some View {
         VStack(spacing: 0){
@@ -36,9 +35,8 @@ struct TeamDetailView: View {
                     .frame(width: 10,height: 20)
                     .foregroundStyle(.white)
                     .onTapGesture {
-                        pathModel.paths.removeLast()
+                        viewModel.back()
                     }
-                
                 Spacer()
             }
         }
@@ -52,7 +50,7 @@ struct TeamDetailView: View {
                     Spacer()
                         .frame(height: 30)
                     
-                    Text("팀 명 : \(team.groupName)")
+                    Text("팀 명 : \(viewModel.team.groupName)")
                     
                     Spacer()
                         .frame(height: 30)
@@ -64,11 +62,11 @@ struct TeamDetailView: View {
                     Spacer()
                         .frame(height: 30)
                     
-                    if team.participationCode == nil {
-                        Text("팀 소개 : \n\(team.description ?? "팀 소개")")
+                    if viewModel.team.participationCode == nil {
+                        Text("팀 소개 : \n\(viewModel.team.description ?? "팀 소개")")
                             .multilineTextAlignment(.center)
                     }else {
-                        Text("팀 비번을 여기 작성")
+                        Text("팀 비밀번호 : \(viewModel.team.participationCode ?? "팀 비밀번호")")
                     }
                     
                     Spacer()
@@ -80,7 +78,7 @@ struct TeamDetailView: View {
                         .foregroundStyle(.textFieldTitle)
                     
                     
-                    ForEach(team.members, id: \.userId){ member in
+                    ForEach(viewModel.team.members, id: \.userId){ member in
                         Spacer()
                             .frame(height:20)
                         HStack{
@@ -115,11 +113,11 @@ struct TeamDetailView: View {
                     Spacer()
                         .frame(height: 100)
                     
-                    if team.owner {
+                    if viewModel.team.owner {
                         CustomButton(
-                            title: "방 삭제하기",
+                            title: "팀 삭제하기",
                             action: {
-                                print("방 삭제")
+                                viewModel.deleteTeam()
                             },
                             backgroundColor: .deleteRed
                         )
@@ -127,7 +125,7 @@ struct TeamDetailView: View {
                         CustomButton(
                             title: "탈퇴하기",
                             action: {
-                                print("탈퇴")
+                                viewModel.leaveTeam()
                             },
                             backgroundColor: .deleteRed
                         )
@@ -139,7 +137,7 @@ struct TeamDetailView: View {
 }
 
 #Preview {
-    TeamDetailView(team: TeamDetailResponse(
+    TeamDetailView(viewModel: TeamDetailViewModel(team: TeamDetailResponse(
         groupId: 1,
         groupName: "박성민 님의 팀",
         description: "박성민팀 !!",
@@ -166,5 +164,5 @@ struct TeamDetailView: View {
             )
         ],
         owner: true
-    ))
+    ), pathModel: PathModel()))
 }

@@ -7,9 +7,10 @@
 
 import Foundation
 
-struct Team: Codable, Identifiable{
-    var id = UUID()
+struct Team: Codable, Identifiable, Hashable{
+    let id : Int
     let name : String
-    let memberCount: String
-    let totalKM: Double
+    let description: String
+    let memberCount: Int
+    let `public` : Bool
 }

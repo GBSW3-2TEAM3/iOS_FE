@@ -12,7 +12,7 @@ struct TeamDetailResponse: Codable , Hashable {
     let groupName : String
     let description : String?
     let currentUserId : Int
-    let participationCode : Int?
+    let participationCode : String?
     let members: [TeamMember]
     let owner: Bool
 }

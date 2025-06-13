@@ -50,7 +50,10 @@ struct RootView: View {
                     EditProfileView()
                         .navigationBarBackButtonHidden()
                 case .detailTeam(let team):
-                    TeamDetailView(team: team)
+                    TeamDetailView(viewModel: TeamDetailViewModel(team: team, pathModel: pathModel))
+                        .navigationBarBackButtonHidden()
+                case .joinTeam(let team):
+                    TeamJoinView(viewModel: TeamJoinViewModel(team: team, pathModel: pathModel))
                         .navigationBarBackButtonHidden()
                 }
             }

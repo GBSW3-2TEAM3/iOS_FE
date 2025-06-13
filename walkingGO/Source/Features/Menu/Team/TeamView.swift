@@ -15,13 +15,16 @@ struct TeamView: View {
     
     var body: some View {
         Group{
-//            if viewModel.team == nil {
-//                //MARK: - 팀이 없을때x
-//                TeamRecommend()
-//            }else{
+            if viewModel.team == nil {
+                //MARK: - 팀이 없을때
+                TeamRecommend(viewModel: .init(pathModel: pathModel))
+            }else{
                 //MARK: - 팀이 있을때
                 teamPresentView
-//            }
+            }
+        }
+        .onAppear {
+            viewModel.hasTeamCheck()
         }
     }
     
@@ -63,7 +66,7 @@ struct TeamView: View {
                             .font(AppFont.PretendardBold(size: 22))
                         Spacer()
                             .frame(height: 10)
-                        Text(teamdescription)
+                        Text(viewModel.team?.description ?? "")
                             .font(AppFont.PretendardMedium(size: 15))
                         Spacer()
                             .frame(height: 15)
@@ -125,4 +128,5 @@ struct TeamView: View {
 
 #Preview {
     TeamView()
+        .environmentObject(PathModel())
 }

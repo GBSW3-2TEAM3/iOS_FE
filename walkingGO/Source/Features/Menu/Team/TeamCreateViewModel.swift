@@ -17,6 +17,7 @@ class TeamCreateViewModel: ObservableObject{
     
     func teamCreate() {
         let url = Config.url
+        
         guard let token = KeychainWrapper.standard.string(forKey: "authorization") else{
             print("액세스 토큰이 없음")
             return
@@ -42,6 +43,7 @@ class TeamCreateViewModel: ObservableObject{
                    parameters: parameter,
                    encoding: JSONEncoding.default,
                    headers: headers)
+        .validate()
         .responseDecodable(of: TeamCreateResponse.self) { response in
             switch response.result {
             case .success(let teamResponse):

@@ -60,7 +60,7 @@ struct MapView: View {
                         viewModel.stopTracking()
                         viewModel.stopTimer()
                         showModal = true
-                        //                        pathModel.paths.popLast()
+                        //pathModel.paths.popLast()
                     }
             }
             .padding(.bottom,20)

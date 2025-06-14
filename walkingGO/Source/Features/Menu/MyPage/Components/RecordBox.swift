@@ -25,7 +25,7 @@ struct RecordBox: View {
                     .font(AppFont.PretendardSemiBold(size: 14))
                     .foregroundStyle(.socialLoginText)
                 Text(data)
-                    .font(AppFont.PretendardSemiBold(size: 18))
+                    .font(AppFont.PretendardSemiBold(size: 16))
             }
             Spacer()
                 .frame(width: 40)

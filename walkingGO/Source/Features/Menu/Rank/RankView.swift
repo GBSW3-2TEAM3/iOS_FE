@@ -75,7 +75,7 @@ struct RankView: View {
                                     Text(team.name)
                                         .font(AppFont.PretendardBold(size: 14))
                                         .multilineTextAlignment(.center)
-                                    Text("\(team.totalDistanceKm)")
+                                    Text(String(format: "%.2f",team.totalDistanceKm))
                                         .font(AppFont.PretendardSemiBold(size: 12))
                                         .multilineTextAlignment(.center)
                                 }
@@ -106,7 +106,7 @@ struct RankView: View {
                             
                             Spacer()
                             
-                            Text("\(team.totalDistanceKm)")
+                            Text(String(format: "%.2f",team.totalDistanceKm))
                                 .font(AppFont.PretendardSemiBold(size: 13))
                                 .foregroundStyle(.customBlue)
                             

@@ -88,7 +88,7 @@ struct TeamView: View {
                                         
                                         Spacer()
                                         
-                                        Text("\(member.totalDistanceKm)")
+                                        Text(String(format: "%.2f",member.totalDistanceKm))
                                             .font(AppFont.PretendardSemiBold(size: 13))
                                         
                                         Spacer()

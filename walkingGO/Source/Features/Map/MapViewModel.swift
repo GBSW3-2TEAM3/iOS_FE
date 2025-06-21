@@ -60,6 +60,7 @@ class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
                 endTime: endTime,
                 durationSeconds: second,
                 distanceMeters: distance,
+                steps: stepCount,
                 caloriesBurned: caloriesBurned,
                 routeCoordinatesJson: coordinatesJson
             )
@@ -163,6 +164,7 @@ extension MapViewModel{
 
 //MARK: - 걸음수 로직
 extension MapViewModel{
+    
     func startStepCount(){
         stepStartDate = Date()
         

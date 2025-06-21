@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct MenuView: View {
-    @State var selectedItem: Int = 0
+    @State var selectedItem: Int = 2
     var body: some View {
         TabView(selection: $selectedItem){
-            MainView()
+            RankView()
                 .tabItem{
-                    Image("home")
-                    Text("홈")
+                    Image("rank")
+                    Text("순위")
                 }
                 .tag(0)
             TeamView()
@@ -23,18 +23,24 @@ struct MenuView: View {
                     Text("팀")
                 }
                 .tag(1)
-            RankView()
+            MainView()
                 .tabItem{
-                    Image("rank")
-                    Text("순위")
+                    Image("home")
+                    Text("홈")
                 }
                 .tag(2)
-            MyPageView()
+            RouteView()
                 .tabItem{
-                    Image("profil")
-                    Text("마이")
+                    Image("route")
+                    Text("루트")
                 }
                 .tag(3)
+            MyPageView()
+                .tabItem{
+                    Image("profil") 
+                    Text("마이")
+                }
+                .tag(4)
         }
         .tint(.customBlue)
     }

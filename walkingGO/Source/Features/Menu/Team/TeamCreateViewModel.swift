@@ -17,7 +17,8 @@ class TeamCreateViewModel: ObservableObject{
     
     func teamCreate() {
         let url = Config.url
-        guard let accessToken = KeychainWrapper.standard.string(forKey: "authorization") else{
+        
+        guard let token = KeychainWrapper.standard.string(forKey: "authorization") else{
             print("액세스 토큰이 없음")
             return
         }
@@ -30,11 +31,11 @@ class TeamCreateViewModel: ObservableObject{
         if isPublic {
             parameter["description"] = description
         } else {
-            parameter["password"] = password
+            parameter["participationCode"] = password
         }
         
         let headers: HTTPHeaders = [
-            "authorization" : "Bearer \(accessToken)"
+            "authorization" : "Bearer \(token)"
         ]
         
         AF.request("\(url)/api/groups",
@@ -42,6 +43,7 @@ class TeamCreateViewModel: ObservableObject{
                    parameters: parameter,
                    encoding: JSONEncoding.default,
                    headers: headers)
+        .validate()
         .responseDecodable(of: TeamCreateResponse.self) { response in
             switch response.result {
             case .success(let teamResponse):

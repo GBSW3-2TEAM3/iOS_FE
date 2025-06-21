@@ -3,25 +3,40 @@
 //  walkingGO
 //
 //  Created by 박성민 on 4/11/25.
-//
 
 import SwiftUI
 
 struct CalendarView: View {
-    @State private var selectedDate = Date()
+    @ObservedObject var viewModel: MyPageViewModel
+    @State private var selectedMonth = Date()
+    @State private var selectedDay: Date?
     @State private var dateValues: [Int: Double] = [:]
     
-    let calendar = Calendar.current
+    let calendar: Calendar = {
+        var cal = Calendar.current
+        cal.timeZone = TimeZone(identifier: "Asia/Seoul")!
+        return cal
+    }()
+    
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.timeZone = TimeZone(identifier: "Asia/Seoul")!
+        return formatter
+    }()
     
     var currentMonth: [Date] {
-        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: selectedDate))!
+        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: selectedMonth))!
         let range = calendar.range(of: .day, in: .month, for: startOfMonth)!
         
         let firstDayOfMonth = calendar.component(.weekday, from: startOfMonth)
         let blankDays = firstDayOfMonth - 1
         
         var dates: [Date] = range.compactMap { day in
-            calendar.date(byAdding: .day, value: day - 1, to: startOfMonth)
+            let components = DateComponents(year: calendar.component(.year, from: startOfMonth),
+                                            month: calendar.component(.month, from: startOfMonth),
+                                            day: day)
+            return calendar.date(from: components)
         }
         
         for _ in 0..<blankDays {
@@ -32,14 +47,24 @@ struct CalendarView: View {
     }
     
     func previousMonth() {
-        if let previousMonthDate = calendar.date(byAdding: .month, value: -1, to: selectedDate) {
-            selectedDate = previousMonthDate
+        if let previousMonthDate = calendar.date(byAdding: .month, value: -1, to: selectedMonth) {
+            selectedMonth = previousMonthDate
+            selectedDay = nil
         }
     }
     
     func nextMonth() {
-        if let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: selectedDate) {
-            selectedDate = nextMonthDate
+        if let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: selectedMonth) {
+            selectedMonth = nextMonthDate
+            selectedDay = nil
+        }
+    }
+    
+    func selectDate(_ date: Date) {
+        let components = calendar.dateComponents([.year, .month, .day], from: date)
+        if let normalizedDate = calendar.date(from: components) {
+            selectedDay = normalizedDate
+            viewModel.getWalkData(date: dateFormatter.string(from: normalizedDate))
         }
     }
     
@@ -49,18 +74,18 @@ struct CalendarView: View {
                 Button(action: previousMonth) {
                     Image(systemName: "chevron.left")
                         .resizable()
-                        .frame(width:10,height: 20)
+                        .frame(width: 10, height: 20)
                         .foregroundStyle(.black)
                 }
                 Spacer()
-                Text("\(calendar.component(.month, from: selectedDate))월")
+                Text("\(calendar.component(.month, from: selectedMonth))월")
                     .font(AppFont.PretendardSemiBold(size: 18))
                     .padding()
                 Spacer()
                 Button(action: nextMonth) {
                     Image(systemName: "chevron.right")
                         .resizable()
-                        .frame(width:10,height: 20)
+                        .frame(width: 10, height: 20)
                         .foregroundStyle(.black)
                 }
             }
@@ -78,7 +103,6 @@ struct CalendarView: View {
                 ForEach(currentMonth, id: \.self) { date in
                     if date == Date.distantPast {
                         Text("")
-                            
                     } else {
                         let day = calendar.component(.day, from: date)
                         let value = dateValues[day] ?? 0
@@ -91,11 +115,14 @@ struct CalendarView: View {
                                 .foregroundColor(.black)
                             
                             Text(String(format: "%.1f", value))
-                                    .font(.caption)
-                                    .foregroundColor(value != 0 ? .red : .clear)
-                                    .frame(height: 14)
+                                .font(.caption)
+                                .foregroundColor(value != 0 ? .red : .clear)
+                                .frame(height: 14)
                         }
                         .frame(minHeight: 60)
+                        .onTapGesture {
+                            selectDate(date)
+                        }
                     }
                 }
             }
@@ -112,6 +139,6 @@ struct CalendarView: View {
 
 struct CalendarView_Previews: PreviewProvider {
     static var previews: some View {
-        CalendarView()
+        CalendarView(viewModel: MyPageViewModel())
     }
 }

@@ -1,25 +1,48 @@
 //
-//  TeamView.swift
+//  TeamJoinView.swift
 //  walkingGO
 //
-//  Created by 박성민 on 5/7/25.
+//  Created by 박성민 on 6/12/25.
 //
 
 import SwiftUI
 
-struct TeamView: View {
-    var teamName: String = "할래'말레'"
-    var teamdescription: String = "경소고 친구들이 모여서 만든 러닝 크루!"
-    @StateObject var viewModel = TeamViewModel()
+struct TeamJoinView: View {
+    @StateObject var viewModel : TeamJoinViewModel
     
     var body: some View {
+        Group{
+            teamPresentView
+        }
+    }
+    
+    var teamPresentView: some View {
         ZStack{
             Color.customBlue
                 .edgesIgnoringSafeArea(.top)
             VStack{
                 HStack{
                     Spacer()
-                    Image(systemName: "gearshape.fill")
+                        .frame(width:20)
+                    Image(systemName: "chevron.left")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 12)
+                        .foregroundStyle(.white)
+                        .onTapGesture {
+                            viewModel.back()
+                        }
+                    Spacer()
+                    Button{
+                        viewModel.joinTeam()
+                    }label:{
+                        Text("팀 가입하기")
+                            .font(AppFont.PretendardSemiBold(size: 11))
+                            .frame(width: 80,height: 30)
+                            .foregroundStyle(.customBlue)
+                            .background(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
+                    }
                 }
                 .padding()
                 .foregroundStyle(.white)
@@ -43,36 +66,33 @@ struct TeamView: View {
                     VStack {
                         Spacer()
                             .frame(height: 80)
-                        Text(teamName)
+                        Text(viewModel.team.groupName)
                             .font(AppFont.PretendardBold(size: 22))
                         Spacer()
                             .frame(height: 10)
-                        Text(teamdescription)
+                        Text(viewModel.team.description!)
                             .font(AppFont.PretendardMedium(size: 15))
                         Spacer()
                             .frame(height: 15)
                         VStack(spacing:22){
-                            ForEach(viewModel.members, id: \.self) { member in
+                            ForEach(viewModel.team.members, id: \.userId) { member in
                                 HStack{
                                     Spacer()
                                         .frame(width: 20)
                                     
                                     Circle()
                                         .frame(width: 35)
-                                        .foregroundStyle(member.color)
                                     
                                     Spacer()
                                         .frame(width: 14)
                                     
-                                    Text(member.name)
+                                    Text(member.username)
                                         .font(AppFont.PretendardSemiBold(size: 11))
-                                        .foregroundStyle(member.color)
                                     
                                     Spacer()
                                     
-                                    Text("\(member.score)")
+                                    Text("\(member.totalDistanceKm)")
                                         .font(AppFont.PretendardSemiBold(size: 13))
-                                        .foregroundStyle(member.color)
                                     
                                     Spacer()
                                         .frame(width: 20)
@@ -102,10 +122,26 @@ struct TeamView: View {
                     }
             }
         }
-
+        
     }
 }
 
 #Preview {
-    TeamView()
+    TeamJoinView(viewModel: TeamJoinViewModel(team: TeamDetailResponse(
+        groupId: 5,
+        groupName: "팀입니다.",
+        description: "공개된 팀",
+        currentUserId: 42,
+        participationCode: nil,
+        members: [
+            TeamMember(
+                userId: 4,
+                username: "박성민",
+                totalDistanceKm: 9.9,
+                owner: false
+            )
+        ],
+        owner: false
+    ), pathModel: PathModel()))
+
 }

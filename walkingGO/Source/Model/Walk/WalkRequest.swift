@@ -17,6 +17,7 @@ struct WalkRequest: Codable {
     let endTime : String
     let durationSeconds : Int
     let distanceMeters : Double
+    let steps: Int
     let caloriesBurned : Double
     let routeCoordinatesJson : String
 }

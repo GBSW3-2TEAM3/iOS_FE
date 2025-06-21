@@ -47,13 +47,10 @@ struct TeamCreateView: View {
     
     var teamViewHeader: some View{
         ZStack{
-            VStack{
-                Spacer()
-                    .frame(height: 1)
-                Rectangle()
-                    .frame(height: 50)
-                    .foregroundStyle(.customBlue)
-            }
+            Rectangle()
+                .frame(height: 50)
+                .foregroundStyle(.customBlue)
+                .background(.customBlue)
             HStack{
                 Image(systemName: "chevron.left")
                     .resizable()

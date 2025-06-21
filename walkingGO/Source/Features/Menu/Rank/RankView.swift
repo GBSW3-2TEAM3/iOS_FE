@@ -11,25 +11,29 @@ struct RankView: View {
     @EnvironmentObject private var pathModel: PathModel
     @StateObject var viewModel = RankViewModel()
     var body: some View {
-        ZStack(alignment: .top){
-            Color.customBlue
-                .edgesIgnoringSafeArea(.top)
-            VStack(spacing: 0) {
-                Spacer()
-                    .frame(height: 50)
+        VStack(spacing:0){
+            Rectangle()
+                .frame(height: 50)
+                .foregroundStyle(.customBlue)
+                .background(.customBlue)
+            ZStack{
                 Color.viewGray
-            }
-            VStack(spacing:0){
-                RankMenuBar()
-                ScrollView{
-                    VStack{
-                        RecommendTeamView()
-                        
-                        teamRankingView
-                        Spacer()
+                VStack(spacing:0){
+                    ScrollView{
+                        VStack{
+                            //RecommendTeamView()
+                            
+                            teamRankingView
+                            Spacer()
+                        }
                     }
                 }
+                .padding(25)
             }
+            Spacer()
+        }
+        .onAppear{
+            viewModel.getRanks()
         }
     }
     
@@ -38,8 +42,6 @@ struct RankView: View {
             HStack{
                 Text("오늘의 Top 3")
                     .font(AppFont.PretendardSemiBold(size: 14))
-                    .padding([.top,.leading],15)
-                    .padding(.bottom,5)
                 Spacer()
             }
             
@@ -49,7 +51,7 @@ struct RankView: View {
                 .foregroundStyle(.white)
                 .overlay{
                     HStack(spacing:40){
-                        ForEach(viewModel.topThreeTeams){ team in
+                        ForEach(viewModel.topThreeTeams) {team in
                             VStack(spacing:8){
                                 let medalImage = {
                                     switch team.rank {
@@ -73,7 +75,7 @@ struct RankView: View {
                                     Text(team.name)
                                         .font(AppFont.PretendardBold(size: 14))
                                         .multilineTextAlignment(.center)
-                                    Text("\(team.score)")
+                                    Text(String(format: "%.2f",team.totalDistanceKm))
                                         .font(AppFont.PretendardSemiBold(size: 12))
                                         .multilineTextAlignment(.center)
                                 }
@@ -83,7 +85,7 @@ struct RankView: View {
                     }
                 }
             
-            ForEach(viewModel.remainingTeams) { team in
+            ForEach(viewModel.remainingTeams, id: \.id) { team in
                 Rectangle()
                     .frame(width: 350, height: 55)
                     .foregroundStyle(.white)
@@ -104,7 +106,7 @@ struct RankView: View {
                             
                             Spacer()
                             
-                            Text("\(team.score)")
+                            Text(String(format: "%.2f",team.totalDistanceKm))
                                 .font(AppFont.PretendardSemiBold(size: 13))
                                 .foregroundStyle(.customBlue)
                             
@@ -113,38 +115,6 @@ struct RankView: View {
                         }
                     }
             }
-        }
-    }
-}
-
-private struct RankMenuBar: View {
-    @EnvironmentObject private var pathModel: PathModel
-    var body: some View {
-        ZStack{
-            VStack{
-                Rectangle()
-                    .frame(height: 50)
-                    .foregroundStyle(.customBlue)
-            }
-            HStack{
-                Spacer()
-                Image("search")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 22)
-                    .foregroundStyle(.white)
-                
-                Image("plus")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 22)
-                    .foregroundStyle(.white)
-                    .onTapGesture{
-                        print("클릭!")
-                        pathModel.paths.append(.createTeam)
-                    }
-            }
-            .padding(.trailing,10)
         }
     }
 }

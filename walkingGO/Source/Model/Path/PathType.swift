@@ -18,4 +18,5 @@ enum PathType: Hashable {
     case editProfil
     case detailTeam(TeamDetailResponse)
     case joinTeam(TeamDetailResponse)
+    case detailRoute(Int)
 }

@@ -3,7 +3,6 @@
 //  walkingGO
 //
 //  Created by 박성민 on 4/11/25.
-//
 
 import SwiftUI
 

@@ -35,6 +35,47 @@ struct MyPageView: View {
                     Spacer()
                 }
             }
+            
+            if viewModel.isShowingModal {
+                Color.black.opacity(0.3)
+                    .ignoresSafeArea()
+                
+                VStack(spacing: 16) {
+                    Spacer()
+                    Text("경로 공유하기")
+                        .font(.headline)
+                    
+                    TextField("경로 이름", text: $viewModel.routeName)
+                        .padding()
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
+                    
+                    TextField("경로 설명", text: $viewModel.routeDescription)
+                        .padding()
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
+                    
+                    HStack {
+                        Button("취소") {
+                            viewModel.isShowingModal = false
+                        }
+                        .foregroundColor(.red)
+                        
+                        Spacer()
+                        
+                        Button("저장") {
+                            viewModel.walkLogSave()
+                        }
+                        .foregroundColor(.blue)
+                    }
+                }
+                .padding()
+                .frame(width: 300)
+                .background(Color.white)
+                .cornerRadius(12)
+                .shadow(radius: 10)
+            }
+
         }
     }
 }
@@ -156,7 +197,7 @@ fileprivate struct MyRecord: View {
     }
 }
 
-struct MyPageRouteView : View {
+fileprivate struct MyPageRouteView : View {
     @ObservedObject var viewModel: MyPageViewModel
     
     private let dateFormatter: DateFormatter = {
@@ -203,25 +244,43 @@ struct MyPageRouteView : View {
     }
     var body: some View{
         ZStack{
-            //MARK: - 지도 뷰
-            if routeCoordinates.isEmpty {
-                Rectangle()
-                    .fill(Color.gray)
+            VStack(spacing:0){
+                //MARK: - 지도 뷰
+                if routeCoordinates.isEmpty {
+                    Rectangle()
+                        .fill(Color.gray)
+                        .frame(width: 350, height: 300)
+                        .cornerRadius(5)
+                    Text("경로가 저장되지 않았습니다")
+                        .foregroundStyle(.white)
+                        .font(AppFont.PretendardMedium(size: 16))
+                } else {
+                    Map(position: .constant(cameraPosition)) {
+                        MapPolyline(coordinates: routeCoordinates)
+                            .stroke(.blue, lineWidth: 5)
+                    }
                     .frame(width: 350, height: 300)
                     .cornerRadius(5)
-                Text("경로가 저장되지 않았습니다")
-                    .foregroundStyle(.white)
-                    .font(AppFont.PretendardMedium(size: 16))
-            } else {
-                Map(position: .constant(cameraPosition)) {
-                    MapPolyline(coordinates: routeCoordinates)
-                        .stroke(.blue, lineWidth: 5)
+                    .mapStyle(.standard)
+                    .padding(.all)
+                    .clipped()
                 }
-                .frame(width: 350, height: 300)
-                .cornerRadius(5)
-                .mapStyle(.standard)
-                .padding(.all)
-                .clipped()
+                if viewModel.latestWalkID != nil{
+                    HStack{
+                        Spacer()
+                            .frame(width: 270)
+                        Button{
+                            viewModel.isShowingModal.toggle()
+                        }label: {
+                            Text("경로 공유하기")
+                                .frame(width: 80,height: 28)
+                                .foregroundStyle(.white)
+                                .background(.customBlue)
+                                .font(AppFont.PretendardSemiBold(size: 10))
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                        }
+                    }
+                }
             }
         }
     }

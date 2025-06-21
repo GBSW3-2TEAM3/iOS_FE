@@ -55,6 +55,8 @@ struct RootView: View {
                 case .joinTeam(let team):
                     TeamJoinView(viewModel: TeamJoinViewModel(team: team, pathModel: pathModel))
                         .navigationBarBackButtonHidden()
+                case .detailRoute(let id):
+                    RouteDetailView(viewModel: RouteDetailViewModel(routeId: id))
                 }
             }
         }

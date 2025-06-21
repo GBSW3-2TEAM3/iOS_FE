@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RouteView: View {
     @StateObject var viewModel = RouteViewModel()
+    @EnvironmentObject var pathModel: PathModel
     var body: some View {
         VStack(spacing:0){
             Rectangle()
@@ -29,22 +30,25 @@ struct RouteView: View {
                         }
                         .padding(25)
                         
-                        ForEach(viewModel.route, id: \.id){ route in
+                        ForEach(viewModel.route, id: \.id) { route in
                             RoundedRectangle(cornerRadius: 10)
                                 .frame(width: 350, height: 55)
                                 .foregroundStyle(.white)
                                 .overlay {
                                     HStack{
-                                        Text(route.name)
+                                        Text(route.routeName)
                                             .font(AppFont.PretendardBold(size: 16))
                                         Spacer()
-                                        Text(String(format: "%.1f", route.km))
+                                        Text(String(format: "%.1f", route.distanceKm))
                                             .font(AppFont.PretendardSemiBold(size: 13))
                                             .foregroundStyle(.customBlue)
-                                        Text(route.time)
+                                        Text("\(route.durationSeconds)")
                                             .font(AppFont.PretendardSemiBold(size: 13))
                                     }
                                     .padding(.horizontal,20)
+                                }
+                                .onTapGesture {
+                                    pathModel.paths.append(.detailRoute(route.id))
                                 }
                             
                             Spacer()
@@ -57,6 +61,9 @@ struct RouteView: View {
                 }
                 Spacer()
             }
+        }
+        .onAppear{
+            viewModel.getRoute()
         }
     }
 }

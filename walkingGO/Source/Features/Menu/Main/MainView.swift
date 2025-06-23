@@ -4,23 +4,21 @@
 //
 //  Created by 박성민 on 4/1/25.
 //
-
 import SwiftUI
 import SDWebImageSwiftUI
 
 struct MainView: View {
     @EnvironmentObject var pathModel: PathModel
+    @StateObject private var viewModel = MainViewModel()
+    
     var body: some View {
-        GeometryReader{ geometry in
-            ZStack{
+        GeometryReader { geometry in
+            ZStack {
                 Color.customBlue
                     .edgesIgnoringSafeArea(.top)
-                VStack{
+                VStack {
                     MainViewHeader()
-                    
-                    
                     MainViewTitle()
-                    
                     GoalProgressBar(
                         totalValue: 5000,
                         currentValue: 2800,
@@ -28,49 +26,49 @@ struct MainView: View {
                     )
                     Spacer()
                         .frame(height: 30)
-                    HStack{
+                    HStack {
                         Spacer()
-                        Button{
+                        Button {
                             pathModel.paths.append(.goal)
-                        }label: {
+                        } label: {
                             Text("목표 수정하기")
                                 .font(AppFont.PretendardMedium(size: 10))
                                 .foregroundStyle(.white)
-                                .underline(true,color: .white)
+                                .underline(true, color: .white)
                         }
                         Spacer()
                             .frame(width: 25)
                     }
                     Spacer()
                 }
-                ZStack{
+                ZStack {
                     RoundedRectangle(cornerRadius: 20)
                         .foregroundStyle(.white)
-                    VStack{
+                    VStack {
                         Spacer()
                             .frame(height: 10)
-                        GroupRank(
-                            totalValue: 5000,
-                            currentValue: 4500,
-                            width: geometry.size.width
-                        )
+                        GroupRank()
+                            .environmentObject(viewModel)
                         Spacer()
                             .frame(height: 10)
-                        
                         MyRecorde()
+                            .environmentObject(viewModel)
                         Spacer()
                     }
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height * 0.70)
-                .padding(.top,geometry.size.height * 0.40)
+                .padding(.top, geometry.size.height * 0.40)
             }
+        }
+        .onAppear {
+            viewModel.fetchData()
         }
     }
 }
 
 fileprivate struct MainViewHeader: View {
-    var body: some View{
-        HStack{
+    var body: some View {
+        HStack {
             Spacer()
                 .frame(width: 20)
             Image("MainLogo")
@@ -96,20 +94,18 @@ fileprivate struct MainViewHeader: View {
 
 fileprivate struct MainViewTitle: View {
     var name: String = "성민"
-    var body: some View{
-        HStack{
+    var body: some View {
+        HStack {
             Spacer()
                 .frame(width: 23)
-            VStack(alignment:.leading){
+            VStack(alignment: .leading) {
                 Text("반가워요, \(name)님")
                 Text("오늘의 목표를 달성해봐요!")
             }
             .font(AppFont.PretendardSemiBold(size: 20))
             .foregroundStyle(.white)
-            
             Spacer()
-            
-            AnimatedImage(url:URL(string:"https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Man%20Running.png"))
+            AnimatedImage(url: URL(string: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Man%20Running.png"))
                 .resizable()
                 .scaledToFit()
                 .frame(width: 120)
@@ -140,9 +136,9 @@ fileprivate struct GoalProgressBar: View {
                     .font(AppFont.PretendardSemiBold(size: 14))
                 Spacer()
             }
-            .padding([.leading,.trailing],15)
+            .padding([.leading, .trailing], 15)
             
-            ZStack(alignment:.leading) {
+            ZStack(alignment: .leading) {
                 Rectangle()
                     .frame(width: width * 0.9, height: 20)
                     .foregroundColor(.white)
@@ -155,22 +151,22 @@ fileprivate struct GoalProgressBar: View {
                 
                 Triangle()
                     .fill(Color.white)
-                    .frame(width: 26,height: 11)
-                    .offset(y:25)
-                    .padding(.leading,(width * (CGFloat(self.progress)*0.92))*0.9)
+                    .frame(width: 26, height: 11)
+                    .offset(y: 25)
+                    .padding(.leading, (width * (CGFloat(self.progress) * 0.92)) * 0.9)
                 
-                VStack{
+                VStack {
                     Rectangle()
                         .foregroundStyle(.white)
-                        .frame(width: 55,height: 33)
+                        .frame(width: 55, height: 33)
                         .cornerRadius(5)
-                        .offset(y:55)
-                        .padding(.leading,(width * (CGFloat(self.progress)*0.85))*0.9)
+                        .offset(y: 55)
+                        .padding(.leading, (width * (CGFloat(self.progress) * 0.85)) * 0.9)
                     Text("\(Int(progressPercentage))%")
                         .foregroundStyle(.progressBlue)
                         .font(AppFont.PretendardSemiBold(size: 16))
-                        .offset(y:25)
-                        .padding(.leading,(width * (CGFloat(self.progress)*0.85))*0.9)
+                        .offset(y: 25)
+                        .padding(.leading, (width * (CGFloat(self.progress) * 0.85)) * 0.9)
                 }
             }
         }
@@ -178,170 +174,143 @@ fileprivate struct GoalProgressBar: View {
 }
 
 fileprivate struct GroupRank: View {
-    var totalValue: Int
-    var currentValue: Int
-    var width: CGFloat
+    @EnvironmentObject private var viewModel: MainViewModel
     
-    var progress: Double {
-        totalValue == 0 ? 0 : Double(currentValue) / Double(totalValue)
-    }
-    
-    var number: Int = 186
-    var body: some View{
-        VStack{
-            HStack{
+    var body: some View {
+        VStack {
+            HStack {
                 Spacer()
                     .frame(width: 10)
                 Text("그룹 순위")
                     .font(AppFont.PretendardSemiBold(size: 14))
-                
                 Spacer()
-                
                 Text("더보기")
                     .foregroundStyle(.gray)
                     .font(AppFont.PretendardMedium(size: 11))
-                
                 Spacer()
                     .frame(width: 10)
             }
-            ZStack{
+            ZStack {
                 Rectangle()
                     .foregroundStyle(.textFieldBackground)
-                    .frame(width: 350,height: 84)
+                    .frame(width: 350, height: 84)
                     .cornerRadius(10)
-                HStack{
-                    Spacer()
-                        .frame(width: 20)
-                    VStack{
-                        Text("봉양레인저")
-                            .font(AppFont.PretendardBold(size: 14))
-                            .offset(y:7)
-                        
-                        HStack{
-                            Image("UpArrow")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width:35)
-                                .offset(x:5)
-                            Text("5위")
-                                .font(AppFont.PretendardBold(size: 28))
-                                .foregroundStyle(.red)
-                                .offset(x:-7)
-                        }
-                    }
-                    
-                    Spacer()
-                    VStack{
-                        ZStack(alignment:.leading){
-                            Rectangle()
-                                .frame(width: width * 0.45,height: 15)
-                                .foregroundStyle(.white)
-                                .cornerRadius(10)
-                            Rectangle()
-                                .frame(width: (width * CGFloat(self.progress))*0.45, height: 15)
-                                .cornerRadius(10)
-                                .foregroundColor(.textFieldTitle)
-                        }
+                if viewModel.myRank != nil {
+                    HStack {
                         Spacer()
-                            .frame(height: 10)
-                        Text("다음 순위까지 \(number)걸음 남았어요")
-                            .font(AppFont.PretendardMedium(size: 8))
-                            .multilineTextAlignment(.center)
-                            .lineLimit(1)
-                            .truncationMode(.tail)
+                            .frame(width: 20)
+                        Image("Medal")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 50)
+                        Text("봉양레인저팀은 현재")
+                            .font(AppFont.PretendardBold(size: 14))
+                        
+                        Text(viewModel.myRank != nil ? "\(viewModel.myRank!)위" : "없음")
+                            .font(AppFont.PretendardBold(size: 20))
+                            .foregroundStyle(.red)
+                        
+                        Text("입니다")
+                            .font(AppFont.PretendardBold(size: 14))
+                        Spacer()
+                            .frame(width: 20)
                     }
-                    Spacer()
-                        .frame(width: 20)
+                    .padding()
+                } else {
+                    VStack{
+                        Text("나의 팀이 존재하지 않아요\n팀을 만들거나 가입해보세요!")
+                            .multilineTextAlignment(.center)
+                            .font(AppFont.PretendardSemiBold(size: 15))
+                    }
                 }
-                .padding()
             }
         }
         .padding()
     }
 }
 
-fileprivate struct MyRecorde : View {
+fileprivate struct MyRecorde: View {
     @EnvironmentObject var pathModel: PathModel
-    var body: some View{
-        ZStack{
+    @EnvironmentObject var viewModel: MainViewModel
+    
+    var body: some View {
+        ZStack {
             Rectangle()
                 .foregroundStyle(.textFieldBackground)
                 .frame(width: 402, height: 270)
-            VStack{
-                HStack{
-                    Spacer()
-                        .frame(width: 10)
-                    Text("나의 기록")
-                        .font(AppFont.PretendardSemiBold(size: 14))
-                    
-                    Spacer()
-                    
-                    Text("더보기")
-                        .foregroundStyle(.gray)
-                        .font(AppFont.PretendardMedium(size: 11))
-                    
-                    Spacer()
-                        .frame(width: 10)
-                }
+            VStack {
                 Spacer()
                     .frame(height: 20)
-                ZStack{
+                ZStack {
                     Rectangle()
-                        .foregroundStyle(.white)
-                        .frame(width: 350,height: 113)
+                        .frame(width: 350, height: 113)
                         .cornerRadius(10)
-                    VStack{
-                        HStack(spacing:35){
-                            ForEach(["월","화","수","목","금","토","일"], id:\.self){ day in
-                                Text(day)
+                        .foregroundStyle(.white)
+                        .overlay {
+                            HStack(spacing: 55) {
+                                ForEach(viewModel.topThreeTeams) { team in
+                                    VStack(spacing: 8) {
+                                        let medalImage = {
+                                            switch team.rank {
+                                            case 1:
+                                                return "goldRank"
+                                            case 2:
+                                                return "silverRank"
+                                            case 3:
+                                                return "bronzeRank"
+                                            default:
+                                                return "goldRank"
+                                            }
+                                        }()
+                                        
+                                        Image(medalImage)
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 70)
+                                        
+                                        VStack(spacing: 2) {
+                                            Text(team.name)
+                                                .font(AppFont.PretendardBold(size: 10))
+                                                .multilineTextAlignment(.center)
+                                            Text(String(format: "%.2f km", team.totalDistanceKm))
+                                                .font(AppFont.PretendardSemiBold(size: 8))
+                                                .multilineTextAlignment(.center)
+                                        }
+                                    }
+                                }
                             }
+                            .padding()
                         }
-                        .font(AppFont.PretendardSemiBold(size: 14))
-                        Spacer()
-                            .frame(height: 10)
-                        HStack(spacing:17){
-                            ForEach(1...7, id:\.self){ _ in
-                                borderCircle()
-                            }
-                        }
-                        Spacer()
-                            .frame(height: 10)
-                        HStack(spacing:24){
-                            ForEach(1...7, id:\.self){ num in
-                                Text("\(num*1234)")
-                            }
-                        }
-                        .font(AppFont.PretendardBold(size: 8))
-                        .foregroundStyle(.progressBlue)
-                    }
                 }
                 Spacer()
                     .frame(height: 20)
-                Button{
-                    
-                }label: {
-                    HStack{
+                Button {
+                    pathModel.paths.append(.map)
+                } label: {
+                    HStack {
                         Text("운동 기록하기")
                             .font(AppFont.PretendardMedium(size: 14))
                             .foregroundStyle(.white)
-                            .onTapGesture {
-                                pathModel.paths.append(.map)
-                            }
                         Image("Record")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 15)
                     }
-                    .frame(width: 143,height: 40)
+                    .frame(width: 143, height: 40)
                     .background(.mainBlue)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                 }
             }
-            .padding([.leading,.trailing],15)
+            .padding([.leading, .trailing], 15)
+        }
+        .onAppear {
+            viewModel.getRanks()
         }
     }
 }
+
 #Preview {
     MainView()
         .environmentObject(PathModel())
+        .environmentObject(MainViewModel())
 }
